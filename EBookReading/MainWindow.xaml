@@ -1,0 +1,33 @@
+﻿<Window x:Class="EBookReading.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:CustomCommand="clr-namespace:EBookReading"        
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="525">
+    <Window.CommandBindings>
+        
+        <CommandBinding Command="CustomCommand:Commands.AddFolder" CanExecute="AddFolderCommand_CanExecute" Executed="AddFolderCommand_Executed"/>
+        <CommandBinding Command="CustomCommand:Commands.AddBook" CanExecute="AddBookCommand_CanExecute" Executed="AddBookCommand_Executed" />
+               
+    </Window.CommandBindings>
+    <Grid>
+        <Menu>
+            <MenuItem Header="File">
+                <MenuItem Command="CustomCommand:Commands.AddFolder" />
+                <MenuItem Command="CustomCommand:Commands.AddBook"  />
+            </MenuItem>
+        </Menu>
+        <ListBox Grid.Row="1" Name="BookList">
+            
+            
+        </ListBox>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="250"  />
+            
+        </Grid.RowDefinitions>
+        
+    </Grid>
+</Window>

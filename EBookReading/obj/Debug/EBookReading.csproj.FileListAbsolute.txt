@@ -1,0 +1,14 @@
+D:\Capstone\EBookReading\EBookReading\bin\Debug\EBookReading.exe.config
+D:\Capstone\EBookReading\EBookReading\bin\Debug\EBookReading.exe
+D:\Capstone\EBookReading\EBookReading\bin\Debug\EBookReading.pdb
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.csprojResolveAssemblyReference.cache
+D:\Capstone\EBookReading\EBookReading\obj\Debug\MainWindow.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\App.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading_MarkupCompile.cache
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading_MarkupCompile.lref
+D:\Capstone\EBookReading\EBookReading\obj\Debug\MainWindow.baml
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.g.resources
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.Properties.Resources.resources
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.csproj.GenerateResource.Cache
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.exe
+D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.pdb
