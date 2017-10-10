@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using iTextSharp.text.pdf;
+using System.Collections.Generic;
 
 namespace EBookReading
 {
@@ -29,13 +30,11 @@ namespace EBookReading
             switch (Extension)
             {
                 case "pdf":
-                  
-                    
-                    
-                                      
-                    
-                    
-                    
+                    PDFBrowser PdfWindow = new PDFBrowser();
+                    PdfReader Reader = new PdfReader(FilePath);
+                    PdfWindow.Title = Reader.Info["Title"] + " by " + Reader.Info["Author"];
+                    PdfWindow.Show();
+                    PdfWindow.Content.Source = new System.Uri(FilePath);               
                     break;
                 case "epub":
                     break;

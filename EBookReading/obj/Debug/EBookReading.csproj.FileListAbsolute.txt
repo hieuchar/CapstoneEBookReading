@@ -12,4 +12,7 @@ D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.Properties.Resource
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.csproj.GenerateResource.Cache
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.exe
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading.pdb
-D:\Capstone\EBookReading\EBookReading\bin\Debug\PdfPrintingNet.dll
+D:\Capstone\EBookReading\EBookReading\obj\Debug\PDFBrowser.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\PDFBrowser.baml
+D:\Capstone\EBookReading\EBookReading\bin\Debug\itextsharp.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\itextsharp.xml
