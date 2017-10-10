@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,9 +24,13 @@ namespace EBookReading
     public class AppData 
     {        
         private static MyAppData Data = new MyAppData();
-        public static List<string>.Enumerator GetBookPaths()
+        public static IEnumerator GetBookPaths()
         {
             return Data.EbookPaths.GetEnumerator();
+        }
+        public static string GetBookAtIndex(int index)
+        {
+            return Data.EbookPaths[index];
         }
         public static void AddBookPath(string PathToAdd)
         {

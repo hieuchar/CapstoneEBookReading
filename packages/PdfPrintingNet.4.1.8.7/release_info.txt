@@ -1,0 +1,1 @@
+Improvements in stability of the core PDF rendering engine. Resolved bug in OnLinkClicked for external PDF files.
