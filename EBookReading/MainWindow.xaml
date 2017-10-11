@@ -5,29 +5,33 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:CustomCommand="clr-namespace:EBookReading"        
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="525">
+        Title="MainWindow" Height="800" Width="650">
     <Window.CommandBindings>
         
         <CommandBinding Command="CustomCommand:Commands.AddFolder" CanExecute="AddFolderCommand_CanExecute" Executed="AddFolderCommand_Executed"/>
         <CommandBinding Command="CustomCommand:Commands.AddBook" CanExecute="AddBookCommand_CanExecute" Executed="AddBookCommand_Executed" />
                
     </Window.CommandBindings>
-    <Grid>
+    <StackPanel ScrollViewer.VerticalScrollBarVisibility="Visible" CanVerticallyScroll="True">
         <Menu>
             <MenuItem Header="File">
                 <MenuItem Command="CustomCommand:Commands.AddFolder" />
                 <MenuItem Command="CustomCommand:Commands.AddBook"  />
             </MenuItem>
         </Menu>
-        <ListBox Grid.Row="1" Name="BookList">
-            
-            
-        </ListBox>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="250"  />
-            
-        </Grid.RowDefinitions>
+        <DataGrid Grid.Row="0" Name="LibraryDataGrid" MaxHeight="500" MaxWidth="550" IsReadOnly="True">
+            <DataGrid.Columns>                
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Click="Open_Book">Open</Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+           
+        </DataGrid>        
         
-    </Grid>
+        
+    </StackPanel>
 </Window>

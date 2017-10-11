@@ -70,6 +70,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppData.cs" />
+    <Compile Include="Book.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="FileManipulator.cs" />
     <Compile Include="MainWindow.xaml.cs">

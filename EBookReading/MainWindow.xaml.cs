@@ -1,8 +1,11 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 
@@ -15,15 +18,17 @@ namespace EBookReading
     public partial class MainWindow : Window
     {
         private FileManipulator FileManip;
+        private List<Book> Library = new List<Book>();
         public MainWindow()
         {
             InitializeComponent();
             FileManip = new FileManipulator();
             AppData.LoadData("EBookPaths.sav");
-            RefreshList();            
+            CreateGrid();
+            RefreshList();
         }
         #region Menu/File Loading
-       
+
         private void AddFolderCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = true;
@@ -33,14 +38,16 @@ namespace EBookReading
             //Open up a file explorer to find a folder with ebooks within it and add all of them
             //Only searches that directory, will not search farther
             var AddFolderDialog = new System.Windows.Forms.FolderBrowserDialog();
-            System.Windows.Forms.DialogResult result = AddFolderDialog.ShowDialog();                
-            if(result == System.Windows.Forms.DialogResult.OK)
-            {              
+            System.Windows.Forms.DialogResult result = AddFolderDialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
                 AppData.AddFolderPath(AddFolderDialog.SelectedPath);
-                AppData.AddBookPath(FileManip.FindFilesFromFolder(AddFolderDialog.SelectedPath));
+                List<string> FilePaths = FileManip.FindFilesFromFolder(AddFolderDialog.SelectedPath);
+                AppData.AddBookPath(FilePaths);
+                Library.AddRange(FileManip.CreateBooksFromPaths(FilePaths));
                 Console.WriteLine("Added a folder");
                 RefreshList();
-            }                       
+            }
         }
         private void AddBookCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -53,51 +60,52 @@ namespace EBookReading
             var AddBookDialog = new System.Windows.Forms.OpenFileDialog();
             AddBookDialog.Filter = "Ebook Files | *.mobi; *.pdf; *.epub";
             AddBookDialog.InitialDirectory = @"C:\";
-            System.Windows.Forms.DialogResult result = AddBookDialog.ShowDialog();            
+            System.Windows.Forms.DialogResult result = AddBookDialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
-            {                
-                AppData.AddBookPath(AddBookDialog.FileName);
-                Console.WriteLine("Added a book");
+            {
+                AppData.AddBookPath(AddBookDialog.FileName);                
                 RefreshList();
-            }            
+            }
         }
         #endregion
         #region List Display
         //Gets list of books from App Data and refreshes the ListBox on the main window
         public void RefreshList()
         {
-            var Books = AppData.GetBookPaths();
-            int BookIndex = 0;
-            while(Books.MoveNext())
+            var BookPath = AppData.GetBookPaths();
+            while (BookPath.MoveNext())
             {
-                
-                //Create a custom panel to hold book name and a button to open a new window with
-                //the content of the book
-                StackPanel BookPanel = new StackPanel();
-                BookPanel.Orientation = Orientation.Horizontal;
-                
-                //Get the name of the book from the file name. 
-                //TODO: Change from file name to title metadata of ebook
-                TextBlock BookName = new TextBlock();
-                BookName.Text = Path.GetFileName(Books.Current.ToString());
-                BookPanel.Children.Add(BookName);
-
-                Button OpenBook = new Button();
-                OpenBook.Content = "Open Book";
-                OpenBook.Name = "Button_" + BookIndex++;
-                OpenBook.Click += Open_Book;
-                BookPanel.Children.Add(OpenBook);
-
-                //Add the panel to the list
-                BookList.Items.Add(BookPanel);
+                if (!Library.Any(x => x.FilePath == BookPath.Current.ToString()))
+                {
+                    Library.Add(FileManip.CreateBookFromPath(BookPath.Current.ToString()));
+                }
             }
+            LibraryDataGrid.Items.Clear();
+            foreach (Book b in Library)
+            {
+                LibraryDataGrid.Items.Add(b);
+            }
+        }
+        public void CreateGrid()
+        {
+            DataGridTextColumn TitleColumn = new DataGridTextColumn();
+            TitleColumn.Header = "Title";
+            TitleColumn.Binding = new Binding("Title");
+            LibraryDataGrid.Columns.Add(TitleColumn);
+            DataGridTextColumn AuthorColumn = new DataGridTextColumn();
+            AuthorColumn.Header = "Author";
+            AuthorColumn.Binding = new Binding("Author");
+            LibraryDataGrid.Columns.Add(AuthorColumn);
+            DataGridTextColumn FileTypeColumn = new DataGridTextColumn();
+            FileTypeColumn.Header = "Extension";
+            FileTypeColumn.Binding = new Binding("Extension");
+            LibraryDataGrid.Columns.Add(FileTypeColumn);
         }
         //Opens a new window with the content of the book
         private void Open_Book(object sender, EventArgs e)
         {
-            Button temp = (Button)sender;
-            int index = int.Parse(temp.Name.Split('_')[1]);
-            FileManip.LoadBook(AppData.GetBookAtIndex(index));
+            Book b = ((FrameworkElement)sender).DataContext as Book;
+            FileManip.LoadBook(b);
         }
         #endregion 
     }
