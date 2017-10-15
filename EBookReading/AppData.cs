@@ -12,9 +12,10 @@ namespace EBookReading
 {
     [Serializable]
     class MyAppData
-    {        
+    {
         public List<string> EbookPaths;
         public List<string> FolderPaths;
+
         public MyAppData()
         {
             EbookPaths = new List<string>();

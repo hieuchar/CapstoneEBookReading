@@ -42,6 +42,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +74,18 @@
     <Compile Include="AppData.cs" />
     <Compile Include="Book.cs" />
     <Compile Include="Commands.cs" />
+    <Compile Include="Epub\Book.cs" />
+    <Compile Include="Epub\Container.cs" />
+    <Compile Include="Epub\Content.cs" />
+    <Compile Include="Epub\EpubBook.cs" />
+    <Compile Include="Epub\EpubReader.cs" />
+    <Compile Include="Epub\Manifest.cs" />
+    <Compile Include="Epub\ManifestItem.cs" />
+    <Compile Include="Epub\NavigationMap.cs" />
+    <Compile Include="Epub\NavPoint.cs" />
+    <Compile Include="Epub\Section.cs" />
+    <Compile Include="Epub\Spine.cs" />
+    <Compile Include="Epub\ToC.cs" />
     <Compile Include="FileManipulator.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -112,5 +126,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

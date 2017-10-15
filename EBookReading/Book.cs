@@ -8,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace EBookReading
 {
-    public class Book
+    public class BookInfo
     {
-        public string Author { get; set; } = "Unknown Author";
-        public string Title { get; set; }
-        public string Extension { get; set; }
-        public string FilePath { get; set; }
-        public Book(string FilePath)
+        private string _author = "Unknown Author";
+        private string _title;
+        private string _extension;
+        private string _filePath;
+        public string Title { get => _title; set => _title = value; }
+        public string Author { get => _author; set => _author = value; }
+        public string FilePath { get => _filePath; set => _filePath = value; }
+        public string Extension { get => _extension; set => _extension = value; }
+
+        public BookInfo(string FilePath)
         {
             this.FilePath = FilePath;
             Title = Path.GetFileNameWithoutExtension(FilePath);

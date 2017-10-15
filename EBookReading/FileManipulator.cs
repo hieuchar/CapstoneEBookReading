@@ -1,4 +1,5 @@
-﻿using iTextSharp.text.pdf;
+﻿using EBookReading.Epub;
+using iTextSharp.text.pdf;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,22 +23,22 @@ namespace EBookReading
             result.AddRange(MobiList);
             return result;
         }
-        public List<Book> CreateBooksFromPaths(List<string> paths)
+        public List<BookInfo> CreateBooksFromPaths(List<string> paths)
         {
-            List<Book> Books = new List<Book>();
+            List<BookInfo> Books = new List<BookInfo>();
             foreach (string s in paths)
             {
-                Book temp = new Book(s);
+                BookInfo temp = new BookInfo(s);
                 temp.AddInformation(GetBookInformation(s));
                 Books.Add(temp);
             }
             return Books;
         }
-        public Book CreateBookFromPath(string path)
+        public BookInfo CreateBookFromPath(string path)
         {
 
 
-            Book temp = new Book(path);
+            BookInfo temp = new BookInfo(path);
             temp.AddInformation(GetBookInformation(path));
 
 
@@ -53,7 +54,8 @@ namespace EBookReading
                     info.Add(InfoReader.Info["Title"]);
                     info.Add(InfoReader.Info["Author"]);
                     break;
-                default:
+                case "epub":
+                default:                    
                     info.Add(Path.GetFileNameWithoutExtension(FilePath));
                     info.Add("Unknown Author");
                     break;
@@ -67,7 +69,7 @@ namespace EBookReading
 
         }
         //Open a new window with the content of the book
-        public void LoadBook(Book b)
+        public void LoadBook(BookInfo b)
         {
             //Split the file path by . since some users may have . in their file names and not just extension            
             switch (b.Extension)
@@ -80,7 +82,9 @@ namespace EBookReading
                     PdfWindow.Content.Source = new System.Uri(b.FilePath);
                     break;
                 case ".epub":
+                    EpubReader.CreateBook(b.FilePath);
                     break;
+                    
                 case ".mobi":
                     break;
             }

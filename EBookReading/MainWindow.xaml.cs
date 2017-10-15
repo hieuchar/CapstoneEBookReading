@@ -1,4 +1,5 @@
 ﻿
+using EBookReading.Epub;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,18 +8,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
-
-
 namespace EBookReading
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
         private FileManipulator FileManip;
-        private List<Book> Library = new List<Book>();
+        private List<BookInfo> Library = new List<BookInfo>();
         public MainWindow()
         {
             InitializeComponent();
@@ -26,6 +22,8 @@ namespace EBookReading
             AppData.LoadData("EBookPaths.sav");
             CreateGrid();
             RefreshList();
+            
+            //EpubReader.Read("C:\\Users\\Hieu\\Desktop\\Tawny Man Trilogy by Robin Hobb\\Tawny Man 1 - Fool's Errand.epub");
         }
         #region Menu/File Loading
 
@@ -69,7 +67,7 @@ namespace EBookReading
         }
         #endregion
         #region List Display
-        //Gets list of books from App Data and refreshes the ListBox on the main window
+        //Gets list of books from App Data and refreshes the DataGrid on the main window
         public void RefreshList()
         {
             var BookPath = AppData.GetBookPaths();
@@ -81,11 +79,12 @@ namespace EBookReading
                 }
             }
             LibraryDataGrid.Items.Clear();
-            foreach (Book b in Library)
+            foreach (BookInfo b in Library)
             {
                 LibraryDataGrid.Items.Add(b);
             }
         }
+        //Sets up the data grid
         public void CreateGrid()
         {
             DataGridTextColumn TitleColumn = new DataGridTextColumn();
@@ -104,7 +103,7 @@ namespace EBookReading
         //Opens a new window with the content of the book
         private void Open_Book(object sender, EventArgs e)
         {
-            Book b = ((FrameworkElement)sender).DataContext as Book;
+            BookInfo b = ((FrameworkElement)sender).DataContext as BookInfo;
             FileManip.LoadBook(b);
         }
         #endregion 
