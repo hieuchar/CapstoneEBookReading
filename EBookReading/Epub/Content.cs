@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using System.IO.Compression;
 
 namespace EBookReading.Epub
 {
@@ -127,13 +128,13 @@ namespace EBookReading.Epub
             set { _contentToC = value; }
         }
 
-        public static void GetMetadataFromContent(ref Container container, string path)
+        public static void GetMetadataFromContent(ref Container container, ref Stream Metadata)
         {
             XmlNodeList xmlNodeList;
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.Schemas.XmlResolver = null;
             //settings.ConformanceLevel = ConformanceLevel.Fragment;
-            XmlReader xmlReader = XmlReader.Create(Path.Combine(path, container.FullPath), settings);
+            XmlReader xmlReader = XmlReader.Create(Metadata, settings);
             XmlDocument xmlDocument = new XmlDocument();
             xmlDocument.Load(xmlReader);
 

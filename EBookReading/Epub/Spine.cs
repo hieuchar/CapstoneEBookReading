@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using System.IO.Compression;
 
 namespace EBookReading.Epub
 {
@@ -42,13 +43,13 @@ namespace EBookReading.Epub
             ItemRef.Clear();
         }
 
-        public static void BuildSpine(ref Container container, string path)
+        public static void BuildSpine(ref Container container, ref Stream SpineFile)
         {
             XmlDocument xmlDocument = new XmlDocument();
             XmlAttributeCollection xmlAttributeCollection;
             XmlNodeList xmlNodeList;
 
-            xmlDocument.Load(Path.Combine(path, container.FullPath));
+            xmlDocument.Load(SpineFile);            
 
             //As before, we're searching all the tags for one containing "spine". We're going to take the toc attribute of that
             //tag and assign it to the Spine.toc property. Then we'll get all the tags within the <spine> tag

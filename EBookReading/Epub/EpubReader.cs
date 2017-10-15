@@ -21,7 +21,7 @@ namespace EBookReading.Epub
         public static void CreateBook(string FilePath)
         {
             EpubBook book = new EpubBook();            
-            book.loadBook(FilePath);            //{
+            book.LoadBook(FilePath);            //{
             //    ZipArchiveEntry container = zip.GetEntry("META-INF/container.xml");
             //    container.Open();
             //    zip.ExtractToDirectory(Path.GetDirectoryName(FilePath));                

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using System.IO.Compression;
 
 namespace EBookReading.Epub
 {
@@ -37,17 +38,18 @@ namespace EBookReading.Epub
             FullBook = new Book();
         }
 
-        public static void GetContentFromContainer(ref Container container, string path)
+        public static void GetContentFromContainer(ref Container container, ref ZipArchiveEntry xmlfile)
         {
             XmlDocument xmldoc = new XmlDocument();
             XmlNodeList xmlNodeList;
             XmlAttributeCollection xmlAttributeCollection;
-            
+            var Stream = xmlfile.Open();
+            xmldoc.Load(Stream);
             //First, open the container XML document for parsing. This file should always be contained
             //in the META-INF subfolder.
 
-            xmldoc.Load(Path.Combine(path, "META-INF/container.xml"));
-
+            //xmldoc.Load(Path.Combine(path, "META-INF/container.xml"));
+            
             //We know that the content file is defined within the <rootfile> tag, as an attribute entitled
             //"full-path". This will cycle through and assign that value to the container's FullPath property.
 

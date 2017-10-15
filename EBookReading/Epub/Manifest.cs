@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.IO;
+using System.IO.Compression;
 
 namespace EBookReading.Epub
 {
@@ -22,13 +23,13 @@ namespace EBookReading.Epub
             ItemManifest = new List<ManifestItem>();
         }
 
-        public static void BuildManifest(ref Container container, string path)
+        public static void BuildManifest(ref Container container, ref Stream ManafestFile)
         {
             XmlDocument xmlDocument = new XmlDocument();
             XmlNodeList xmlNodeList;
             XmlAttributeCollection xmlAttributeCollection;
 
-            xmlDocument.Load(Path.Combine(path, container.FullPath));            
+            xmlDocument.Load(ManafestFile);            
             
             //Same way that we searched for the <metadata> tag, we're going to look for the <manifest> tag. The <manifest>
             //tag contains the list of all the documents the book includes; from the Table of Contents to the Chapters
