@@ -34,3 +34,6 @@ C:\Users\Hieu\Desktop\EBookReading\EBookReading\obj\Debug\EBookReading.Propertie
 C:\Users\Hieu\Desktop\EBookReading\EBookReading\obj\Debug\EBookReading.csproj.GenerateResource.Cache
 C:\Users\Hieu\Desktop\EBookReading\EBookReading\obj\Debug\EBookReading.exe
 C:\Users\Hieu\Desktop\EBookReading\EBookReading\obj\Debug\EBookReading.pdb
+D:\Capstone\EBookReading\EBookReading\bin\Debug\HtmlAgilityPack.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\HtmlAgilityPack.pdb
+D:\Capstone\EBookReading\EBookReading\bin\Debug\HtmlAgilityPack.xml

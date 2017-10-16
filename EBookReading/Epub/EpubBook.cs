@@ -50,20 +50,33 @@ namespace EBookReading.Epub
 
             //Get the container.xml file from the epub archive
             ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");
+            
             Container.GetContentFromContainer(ref _newContainer, ref ContainerXml);
 
             ////Pass in the opf file from the container.xml
             ZipArchiveEntry ContentFile = z.GetEntry(_newContainer.FullPath);
-            Stream ContentStream = ContentFile.Open();
-            Content.GetMetadataFromContent(ref _newContainer, ref ContentStream);
-            Manifest.BuildManifest(ref _newContainer, ref ContentStream);
-            Spine.BuildSpine(ref _newContainer, ref ContentStream);
+            Stream MetaStream = ContentFile.Open();
+            Stream ManifestStream = ContentFile.Open();
+            Stream SpineStream = ContentFile.Open();
+            Content.GetMetadataFromContent(ref _newContainer, ref MetaStream);
+            Manifest.BuildManifest(ref _newContainer,  ref ManifestStream);
+            Spine.BuildSpine(ref _newContainer,  ref SpineStream);
 
+            ZipArchiveEntry ToCFile = z.GetEntry("OEBPS/toc.ncx");
+            Stream ToCStream = ToCFile.Open();
+            
+            ToC.GetDocTitle(ref _newContainer, ref ToCStream);
 
-            ToC.GetDocTitle(ref _newContainer, LocalDirectory);
-            NavigationMap.BuildNavMap(ref _newContainer, LocalDirectory);
-            Book.BuildBook(ref _newContainer, LocalDirectory);
+            Stream NavMapStream = ToCFile.Open();
+            NavigationMap.BuildNavMap(ref _newContainer, ref NavMapStream);            
+            
+            Book.BuildBook(ref _newContainer, ref z);
 
+            MetaStream.Dispose();
+            ManifestStream.Dispose();
+            SpineStream.Dispose();
+            ToCStream.Dispose();
+            NavMapStream.Dispose();
         }
     }
 }

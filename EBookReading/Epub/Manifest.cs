@@ -23,7 +23,7 @@ namespace EBookReading.Epub
             ItemManifest = new List<ManifestItem>();
         }
 
-        public static void BuildManifest(ref Container container, ref Stream ManafestFile)
+        public static void BuildManifest(ref Container container,  ref Stream ManafestFile)
         {
             XmlDocument xmlDocument = new XmlDocument();
             XmlNodeList xmlNodeList;

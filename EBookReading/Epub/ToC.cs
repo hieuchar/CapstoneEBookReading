@@ -38,7 +38,7 @@ namespace EBookReading.Epub
             set { _navMap = value; }
         }
 
-        public static void GetDocTitle(ref Container container, string path)
+        public static void GetDocTitle(ref Container container, ref Stream ToCStream)
         {
             XmlDocument xmlDocument = new XmlDocument();
             XmlNodeList xmlNodeList;
@@ -46,16 +46,17 @@ namespace EBookReading.Epub
             //Open the XML file associated with the Table of Contents ID, whose source is defined
             //in the manifest.
 
-            foreach (ManifestItem manifestItem in container.ContentOPF.ContentManifest.ItemManifest)
-            {
-                if (container.ContentOPF.ContentSpine.toc != null && manifestItem.ID.Contains(container.ContentOPF.ContentSpine.toc))
-                {
-                    string[] href = Directory.GetFiles(path, manifestItem.href, SearchOption.AllDirectories);
-                    xmlDocument.Load(Path.GetFullPath(href[0]));
-                    break;
-                }
-            }
-
+            //foreach (ManifestItem manifestItem in container.ContentOPF.ContentManifest.ItemManifest)
+            //{
+            //    if (container.ContentOPF.ContentSpine.toc != null && manifestItem.ID.Contains(container.ContentOPF.ContentSpine.toc))
+            //    {
+            //        var x = manifestItem.href;
+            //        string[] href = Directory.GetFiles(path, manifestItem.href, SearchOption.AllDirectories);
+                    
+            //        break;
+            //    }
+            //}
+            xmlDocument.Load(ToCStream);
             //Get the docTitle element.
 
             xmlNodeList = xmlDocument.GetElementsByTagName("*");

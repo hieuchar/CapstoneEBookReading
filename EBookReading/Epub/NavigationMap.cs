@@ -32,7 +32,7 @@ namespace EBookReading.Epub
             NavMap.Clear();
         }
 
-        public static void BuildNavMap(ref Container container, string path)
+        public static void BuildNavMap(ref Container container, ref Stream NavMap)
         {
             XmlDocument xmlDocument = new XmlDocument();
             XmlNodeList xmlNodeList = xmlDocument.GetElementsByTagName("*");
@@ -40,18 +40,19 @@ namespace EBookReading.Epub
             //The navigation map is subdivided into navigation points (such as chapters, volumes, books)
             //We find <navMap> and get a list of all <navPoint> elements.
 
-            foreach (ManifestItem manifestItem in container.ContentOPF.ContentManifest.ItemManifest)
-            {
-                if (container.ContentOPF.ContentSpine.toc != null && manifestItem.ID.Contains(container.ContentOPF.ContentSpine.toc))
-                {
-                    string[] href = Directory.GetFiles(path, manifestItem.href, SearchOption.AllDirectories);
-                    string newPath = Path.GetFullPath(href[0]);
-                    xmlDocument.Load(newPath);
-                    xmlNodeList = xmlDocument.GetElementsByTagName("*");
-                    break;
-                }                
-            }
-            
+            //foreach (ManifestItem manifestItem in container.ContentOPF.ContentManifest.ItemManifest)
+            //{
+            //    if (container.ContentOPF.ContentSpine.toc != null && manifestItem.ID.Contains(container.ContentOPF.ContentSpine.toc))
+            //    {
+            //        string[] href = Directory.GetFiles(path, manifestItem.href, SearchOption.AllDirectories);
+            //        string newPath = Path.GetFullPath(href[0]);
+            //        xmlDocument.Load(newPath);
+            //        xmlNodeList = xmlDocument.GetElementsByTagName("*");
+            //        break;
+            //    }                
+            //}
+            xmlDocument.Load(NavMap);
+            xmlNodeList = xmlDocument.GetElementsByTagName("*");
             foreach (XmlElement element in xmlNodeList)
             {                
                 if (element.Name == "navMap")

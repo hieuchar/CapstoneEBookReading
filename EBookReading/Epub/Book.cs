@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.IO.Compression;
+using HtmlAgilityPack;
 
 namespace EBookReading.Epub
 {
@@ -22,38 +24,46 @@ namespace EBookReading.Epub
             BookContents = new List<Section>();
         }
 
-        public static void BuildBook(ref Container container, string path)
+        public static void BuildBook(ref Container container, ref ZipArchive z)
         {
-            XmlDocument xmlDocument = new XmlDocument();
-            XmlNodeList xmlNodeList;
+            HtmlDocument xmlDocument = new HtmlDocument();
+            HtmlNodeCollection xmlNodeList;
+            //XmlDocument xmlDocument = new XmlDocument();
+            //XmlNodeList xmlNodeList;
             
             //In this section, we create a new Book object, which contains a list of Section objects (think of as chapters)
             //which contain a list of strings (the paragraphs in the chapters). The xmldoc.XmlResolver line is required to 
             //ignore the DTD line in the XHTML file. 
                         
             Section tempSection;
-            xmlDocument.XmlResolver = null;
+            //xmlDocument.XmlResolver = null;
 
             //For each NavPoint item in the NavMap, we're going to load the src object, and pull in each paragraph in the chapter
             //as a separate string object in a section. Then we'll create a section for each chapter, and add each section to the book.
 
             foreach (NavPoint _navPoint in container.ContentOPF.ContentToC.ePubNavMap.NavMap)
             {
-                tempSection = new Section();    
-            
+                tempSection = new Section();
+                
+                ZipArchiveEntry ZipSection = z.GetEntry("OEBPS/Text/" + _navPoint.Src);                
+                xmlDocument.Load(ZipSection.Open());
+                xmlNodeList = xmlDocument.DocumentNode.SelectNodes("//p");
+                //xmlNodeList = xmlDocument.GetElementsByTagName("p");
                 //bug here currently if the navPoint Src contains a path, not just a file name.
 
-                string[] href = Directory.GetFiles(path, _navPoint.Src, SearchOption.AllDirectories);
-                //xmlDocument.Load(Path.Combine(path, _navPoint.Src));
-                xmlDocument.Load(Path.GetFullPath(href[0]));
-                xmlNodeList = xmlDocument.GetElementsByTagName("p");
-                
-                foreach (XmlNode _paragraph in xmlNodeList)
+                //string[] href = Directory.GetFiles(path, _navPoint.Src, SearchOption.AllDirectories);
+                ////xmlDocument.Load(Path.Combine(path, _navPoint.Src));
+                //xmlDocument.Load(Path.GetFullPath(href[0]));
+                //xmlNodeList = xmlDocument.GetElementsByTagName("p");
+                if (xmlNodeList != null)
                 {
-                    tempSection.Paragraph.Add(_paragraph.InnerText);
+                    foreach (HtmlNode _paragraph in xmlNodeList)
+                    {
+                        tempSection.Paragraph.Add(_paragraph.InnerText);
+                    }
                 }
-                
-                container.FullBook.BookContents.Add(tempSection);
+
+                container.FullBook.BookContents.Add(tempSection);                
             }
         }
     }
