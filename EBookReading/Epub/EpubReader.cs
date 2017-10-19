@@ -32,6 +32,10 @@ namespace EBookReading.Epub
         {
             return book.NewContainer.ContentOPF.Author;
         }
+        public List<string> GetFirstChapter()
+        {
+            return book.NewContainer.FullBook.BookContents[0].Paragraph;
+        }
         public List<string> GetChapter(string ChapterTitle)
         {
             var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;

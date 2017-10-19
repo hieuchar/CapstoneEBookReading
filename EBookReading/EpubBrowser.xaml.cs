@@ -31,15 +31,10 @@ namespace EBookReading.Epub
             eb = new EpubReader();
             eb.CreateBook(FilePath);
             string SecContent = prefix;
-
+            List<string> firstsection = eb.GetFirstChapter();
+            foreach (string s in firstsection) SecContent += s;
             SectionContent.NavigateToString(SecContent);
-            LoadToC();
-            //var x = eb.GetTest();
-
-            //foreach (var y in x)
-            //{
-            //    test += y;
-            //}
+            LoadToC();           
         }
         private void LoadToC()
         {
@@ -52,10 +47,7 @@ namespace EBookReading.Epub
             var clicked = ((ListBox)sender).SelectedValue;
             List<string> sections = eb.GetChapter(clicked.ToString());
             string chapter = prefix;
-            foreach(string s in sections)
-            {
-                chapter += s;
-            }
+            foreach(string s in sections) chapter += s;            
             SectionContent.NavigateToString(chapter);
         }
     }
