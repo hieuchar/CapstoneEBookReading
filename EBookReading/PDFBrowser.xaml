@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EBookReading"
         mc:Ignorable="d"
-        Title="PDFBrowser" Height="800" Width="575">
+        Title="PDFBrowser" Height="auto" Width="auto">
     <Grid>
         <WebBrowser Name="Content"></WebBrowser>
     </Grid>

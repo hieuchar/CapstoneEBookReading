@@ -62,8 +62,17 @@ namespace EBookReading.Epub
             Manifest.BuildManifest(ref _newContainer,  ref ManifestStream);
             Spine.BuildSpine(ref _newContainer,  ref SpineStream);
 
-            ZipArchiveEntry ToCFile = z.GetEntry("OEBPS/toc.ncx");
-            Stream ToCStream = ToCFile.Open();
+            ZipArchiveEntry ToCFile = null; //= z.GetEntry("OEBPS/toc.ncx");
+            Stream ToCStream = null;
+            foreach (ZipArchiveEntry ToCSearch in z.Entries)
+            {
+                if (ToCSearch.Name.Contains("toc.ncx"))
+                {
+                    ToCFile = ToCSearch;
+                    ToCStream = ToCSearch.Open();
+                    break;
+                }
+            }
             
             ToC.GetDocTitle(ref _newContainer, ref ToCStream);
 

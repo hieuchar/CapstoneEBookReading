@@ -14,7 +14,7 @@ namespace EBookReading
     class MyAppData
     {
         public List<string> EbookPaths;
-        public List<string> FolderPaths;
+       public List<string> FolderPaths;
 
         public MyAppData()
         {
@@ -57,6 +57,10 @@ namespace EBookReading
                 Data.FolderPaths.Add(PathToAdd);
             }
         }
+        public static void DeleteBook(string PathToDelete)
+        {
+            Data.EbookPaths.Remove(PathToDelete);
+        }
         public static void LoadData(string FileName)
         {
             Stream LoadStream = null;
@@ -77,7 +81,7 @@ namespace EBookReading
                 if (null != LoadStream)
                 {
                     Data.EbookPaths = LoadData.EbookPaths;
-                    Data.FolderPaths = LoadData.FolderPaths;
+                    //Data.FolderPaths = LoadData.FolderPaths;
                     LoadStream.Close();
                 }
             }

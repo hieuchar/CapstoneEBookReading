@@ -13,19 +13,19 @@ namespace EBookReading
    
     public partial class MainWindow : Window
     {
-        private FileManipulator FileManip;
+        
         private List<BookInfo> Library = new List<BookInfo>();
         public MainWindow()
         {
             InitializeComponent();
-            FileManip = new FileManipulator();
+            
             AppData.LoadData("EBookPaths.sav");
             CreateGrid();
             RefreshList();
             
-            //EpubReader.Read("C:\\Users\\Hieu\\Desktop\\Tawny Man Trilogy by Robin Hobb\\Tawny Man 1 - Fool's Errand.epub");
+            
         }
-        #region Menu/File Loading
+        #region File Loading
 
         private void AddFolderCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
@@ -40,9 +40,9 @@ namespace EBookReading
             if (result == System.Windows.Forms.DialogResult.OK)
             {
                 AppData.AddFolderPath(AddFolderDialog.SelectedPath);
-                List<string> FilePaths = FileManip.FindFilesFromFolder(AddFolderDialog.SelectedPath);
+                List<string> FilePaths = FileManipulator.FindFilesFromFolder(AddFolderDialog.SelectedPath);
                 AppData.AddBookPath(FilePaths);
-                Library.AddRange(FileManip.CreateBooksFromPaths(FilePaths));
+                Library.AddRange(FileManipulator.CreateBooksFromPaths(FilePaths));
                 Console.WriteLine("Added a folder");
                 RefreshList();
             }
@@ -65,17 +65,35 @@ namespace EBookReading
                 RefreshList();
             }
         }
+        private void Open_Book(object sender, EventArgs e)
+        {
+            BookInfo b = ((FrameworkElement)sender).DataContext as BookInfo;
+            FileManipulator.LoadBook(b);
+        }
+        #endregion
+        #region Deleting
+        private void Delete_Book(object sender, EventArgs e)
+        {
+            
+            var DeleteList = LibraryDataGrid.SelectedItems;            
+            foreach(BookInfo bi in DeleteList)
+            {
+                AppData.DeleteBook(bi.FilePath);
+            }
+            RefreshList();
+        }
         #endregion
         #region List Display
         //Gets list of books from App Data and refreshes the DataGrid on the main window
         public void RefreshList()
         {
             var BookPath = AppData.GetBookPaths();
+            Library.Clear();
             while (BookPath.MoveNext())
             {
                 if (!Library.Any(x => x.FilePath == BookPath.Current.ToString()))
                 {
-                    Library.Add(FileManip.CreateBookFromPath(BookPath.Current.ToString()));
+                    Library.Add(FileManipulator.CreateBookFromPath(BookPath.Current.ToString()));
                 }
             }
             LibraryDataGrid.Items.Clear();
@@ -101,11 +119,7 @@ namespace EBookReading
             LibraryDataGrid.Columns.Add(FileTypeColumn);
         }
         //Opens a new window with the content of the book
-        private void Open_Book(object sender, EventArgs e)
-        {
-            BookInfo b = ((FrameworkElement)sender).DataContext as BookInfo;
-            FileManip.LoadBook(b);
-        }
+        
         #endregion 
     }
 }

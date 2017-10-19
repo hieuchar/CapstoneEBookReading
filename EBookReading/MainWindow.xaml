@@ -14,10 +14,11 @@
     </Window.CommandBindings>
     <StackPanel ScrollViewer.VerticalScrollBarVisibility="Visible" CanVerticallyScroll="True">
         <Menu>
-            <MenuItem Header="File">
+            <MenuItem Header="Add">
                 <MenuItem Command="CustomCommand:Commands.AddFolder" />
                 <MenuItem Command="CustomCommand:Commands.AddBook"  />
             </MenuItem>
+            <Button Click="Delete_Book">Delete</Button>
         </Menu>
         <DataGrid Grid.Row="0" Name="LibraryDataGrid" MaxHeight="500" MaxWidth="550" IsReadOnly="True">
             <DataGrid.Columns>                

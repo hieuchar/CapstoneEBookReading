@@ -13,20 +13,47 @@ namespace EBookReading.Epub
 {
     public class EpubReader
     {
+        EpubBook book;
         /// <summary>
         ///Creates a new epub book and loads all the content in
         ///
         /// </summary>
         /// <param name="FilePath">Direct file path to the epub file</param>
-        public static void CreateBook(string FilePath)
+        public void CreateBook(string FilePath)
         {
-            EpubBook book = new EpubBook();            
-            book.LoadBook(FilePath);            //{
-            //    ZipArchiveEntry container = zip.GetEntry("META-INF/container.xml");
-            //    container.Open();
-            //    zip.ExtractToDirectory(Path.GetDirectoryName(FilePath));                
-            //    book.LoadBook(Path.Combine(Directory.GetCurrentDirectory(), Path.GetFileNameWithoutExtension(FilePath)));
-            //}            
+            book = new EpubBook();            
+            book.LoadBook(FilePath);  
+        }
+        public string GetTitle()
+        {
+            return book.NewContainer.ContentOPF.Title;
+        }
+        public string GetAuthor()
+        {
+            return book.NewContainer.ContentOPF.Author;
+        }
+        public List<string> GetChapter(string ChapterTitle)
+        {
+            var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
+            Section res = null;
+            foreach(NavPoint s in sections)
+            {
+                if(s.Text == ChapterTitle)
+                {                    
+                     res = book.NewContainer.FullBook.BookContents.Where(x=> x.PlayOrder == s.PlayOrder).First();
+                }
+            }
+            return res.Paragraph;
+        }
+        public List<string> GetToC()
+        {
+            List<string> ToC = new List<string>();
+            var NavMap = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
+            foreach (NavPoint np in NavMap)
+            {
+                ToC.Add(np.Text);
+            }
+            return ToC;
         }
     }
 }

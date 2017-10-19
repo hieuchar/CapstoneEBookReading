@@ -66,6 +66,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="EpubBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -75,12 +79,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="AppData.cs" />
-    <Compile Include="Book.cs" />
+    <Compile Include="BookInfo.cs" />
     <Compile Include="Commands.cs" />
     <Compile Include="Epub\Book.cs" />
     <Compile Include="Epub\Container.cs" />
     <Compile Include="Epub\Content.cs" />
     <Compile Include="Epub\EpubBook.cs" />
+    <Compile Include="EpubBrowser.xaml.cs">
+      <DependentUpon>EpubBrowser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Epub\EpubReader.cs" />
     <Compile Include="Epub\Manifest.cs" />
     <Compile Include="Epub\ManifestItem.cs" />
