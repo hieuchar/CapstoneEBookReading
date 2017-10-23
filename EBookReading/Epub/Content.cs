@@ -19,15 +19,18 @@ namespace EBookReading.Epub
         private string _subject;
         private string _source;
         private string _rights;
+        
         private Manifest _contentManifest;
         private Spine _contentSpine;
         private ToC _contentToC;
+        private Style _style;
 
         public Content()
         {
             ContentManifest = new Manifest();
             ContentSpine = new Spine();
             ContentToC = new ToC();
+            _style = new Style();
         }
 
         public Content(string title, string author, string language)
@@ -67,7 +70,7 @@ namespace EBookReading.Epub
             get { return _author; }
             set { _author = value; }
         }
-
+        
         public string Language
         {
             get { return _language; }
@@ -127,6 +130,12 @@ namespace EBookReading.Epub
             get { return _contentToC; }
             set { _contentToC = value; }
         }
+        public Style StyleSheet
+        {
+            get { return _style; }
+            set { _style = value; }
+
+        }
 
         public static void GetMetadataFromContent(ref Container container, ref Stream Metadata)
         {
@@ -149,10 +158,8 @@ namespace EBookReading.Epub
             {
                 if (element.Name.Contains("metadata"))
                 {
-
                     //If we find the <metadata> tag, we now want to get all the child fields inside it. We can then
                     //break out of the foreach loop since we've found what we're looking for.
-
                     xmlNodeList = element.GetElementsByTagName("*");
                     break;
                 }
@@ -165,61 +172,61 @@ namespace EBookReading.Epub
             foreach (XmlElement element in xmlNodeList)
             {
                 var con = container.ContentOPF;
-                
 
-                    if (element.Name.Contains("title"))
-                    {
-                        con.Title = element.InnerText;
-                        continue;
-                    }
 
-                    if (element.Name.Contains("creator"))
-                    {
-                        con.Author = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("title"))
+                {
+                    con.Title = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("language"))
-                    {
-                        con.Language = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("creator"))
+                {
+                    con.Author = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("identifier"))
-                    {
-                        con.ID = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("language"))
+                {
+                    con.Language = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("date"))
-                    {
-                        con.Date = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("identifier"))
+                {
+                    con.ID = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("publisher"))
-                    {
-                        con.Publisher = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("date"))
+                {
+                    con.Date = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("subject"))
-                    {
-                        con.Subject = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("publisher"))
+                {
+                    con.Publisher = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("source"))
-                    {
-                        con.Source = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("subject"))
+                {
+                    con.Subject = element.InnerText;
+                    continue;
+                }
 
-                    if (element.Name.Contains("rights"))
-                    {
-                        con.Rights = element.InnerText;
-                        continue;
-                    }
+                if (element.Name.Contains("source"))
+                {
+                    con.Source = element.InnerText;
+                    continue;
+                }
+
+                if (element.Name.Contains("rights"))
+                {
+                    con.Rights = element.InnerText;
+                    continue;
+                }
                 
             }
         }

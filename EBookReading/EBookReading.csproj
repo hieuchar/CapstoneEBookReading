@@ -43,6 +43,9 @@
     <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />
@@ -95,6 +98,7 @@
     <Compile Include="Epub\NavPoint.cs" />
     <Compile Include="Epub\Section.cs" />
     <Compile Include="Epub\Spine.cs" />
+    <Compile Include="Epub\Style.cs" />
     <Compile Include="Epub\ToC.cs" />
     <Compile Include="FileManipulator.cs" />
     <Compile Include="MainWindow.xaml.cs">

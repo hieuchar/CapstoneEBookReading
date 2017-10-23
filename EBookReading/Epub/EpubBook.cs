@@ -50,10 +50,10 @@ namespace EBookReading.Epub
 
             //Get the container.xml file from the epub archive
             ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");
-            
+            Style.LoadStyle(ref _newContainer, ref z);
             Container.GetContentFromContainer(ref _newContainer, ref ContainerXml);
 
-            ////Pass in the opf file from the container.xml
+            ////Pass in the opf file from the container.xml            
             ZipArchiveEntry ContentFile = z.GetEntry(_newContainer.FullPath);
             Stream MetaStream = ContentFile.Open();
             Stream ManifestStream = ContentFile.Open();
@@ -61,7 +61,7 @@ namespace EBookReading.Epub
             Content.GetMetadataFromContent(ref _newContainer, ref MetaStream);
             Manifest.BuildManifest(ref _newContainer,  ref ManifestStream);
             Spine.BuildSpine(ref _newContainer,  ref SpineStream);
-
+            
             ZipArchiveEntry ToCFile = null; //= z.GetEntry("OEBPS/toc.ncx");
             Stream ToCStream = null;
             foreach (ZipArchiveEntry ToCSearch in z.Entries)

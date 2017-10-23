@@ -49,6 +49,10 @@ namespace EBookReading.Epub
             }
             return res.Paragraph;
         }
+        public List<string> GetCSS()
+        {
+            return book.NewContainer.ContentOPF.StyleSheet.StyleSheets;
+        }
         public List<string> GetToC()
         {
             List<string> ToC = new List<string>();
