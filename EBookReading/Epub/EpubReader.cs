@@ -34,14 +34,22 @@ namespace EBookReading.Epub
         }
         public List<string> GetFirstChapter()
         {
-            return book.NewContainer.FullBook.BookContents[0].Paragraph;
+            var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
+            var start = sections.Min(x => x.PlayOrder);
+            return GetChapter(ref start, 0);
         }
+        /// <summary>
+        /// Gets a chapter from the book       
+        /// </summary>
+        /// <param name="ChapterTitle">Chapter title to search for</param>
+        /// <param name="increment"> Which direction to get next chapter. Will be 0 if the user opens a chapter from ToC on left</param>
+        /// <returns></returns>
         public List<string> GetChapter(string ChapterTitle)
         {
             var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
             Section res = null;
             foreach(NavPoint s in sections)
-            {
+            {                
                 if(s.Text == ChapterTitle)
                 {                    
                      res = book.NewContainer.FullBook.BookContents.Where(x=> x.PlayOrder == s.PlayOrder).First();
@@ -49,10 +57,61 @@ namespace EBookReading.Epub
             }
             return res.Paragraph;
         }
+        public List<string> GetChapter(ref int ChapterOrder, int increment)
+        {
+            var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
+            Section res = null;
+            foreach (NavPoint s in sections)
+            {
+                if (s.PlayOrder == ChapterOrder + increment)
+                {                   
+                    res = book.NewContainer.FullBook.BookContents.Where(x => x.PlayOrder == s.PlayOrder).FirstOrDefault();
+                }
+            }
+            if (res != null)
+            {
+                ChapterOrder += increment;
+                return res.Paragraph;
+            }
+            else if (ChapterOrder + increment > sections.Min(x => x.PlayOrder) && ChapterOrder + increment <= sections.Max(x => x.PlayOrder))
+            {
+                ChapterOrder += increment;
+                return GetChapter(ref ChapterOrder, increment);
+            }
+            else
+            {
+                return GetChapter(ref ChapterOrder, 0);
+            }
+        }
+        /// <summary>
+        /// Checks the NavMap and returns the number of the chapter title in the play order.
+        /// </summary>
+        /// <param name="ChapterTitle"></param>
+        /// <returns></returns>
+        public int GetPlayOrder(string ChapterTitle)
+        {
+            var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;            
+            foreach (NavPoint s in sections)
+            {
+                if (s.Text == ChapterTitle)
+                {
+                    return s.PlayOrder;
+                }
+            }
+            return 0;
+        }
+        /// <summary>
+        /// Returns the css files converted to a list of strings
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetCSS()
         {
             return book.NewContainer.ContentOPF.StyleSheet.StyleSheets;
         }
+        /// <summary>
+        /// Returns the Table of Contents as a list of strings
+        /// </summary>
+        /// <returns></returns>
         public List<string> GetToC()
         {
             List<string> ToC = new List<string>();

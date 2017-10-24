@@ -29,8 +29,7 @@ namespace EBookReading.Epub
                 {
                     HtmlDocument doc = new HtmlDocument();
                     doc.Load(entry.Open());
-                    container.ContentOPF.StyleSheet._stylesheets.Add(doc.DocumentNode.OuterHtml);
-                    
+                    container.ContentOPF.StyleSheet._stylesheets.Add(doc.DocumentNode.OuterHtml);                    
                 }
             }
             

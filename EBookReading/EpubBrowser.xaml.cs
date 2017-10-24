@@ -21,8 +21,9 @@ namespace EBookReading.Epub
     /// </summary>
     public partial class EpubBrowser : Window
     {
-        string prefix = "<head> <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'> <style> stylereplace </style> </head>";
+        string Prefix = "<head> <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'> <style> stylereplace </style> </head>";
         EpubReader eb;
+        int ChapterNumber;
         public EpubBrowser()
         {
             InitializeComponent();
@@ -31,8 +32,8 @@ namespace EBookReading.Epub
         {            
             eb = new EpubReader();
             eb.CreateBook(FilePath);
-            prefix =  LoadCSS(prefix);
-            string SecContent = prefix;
+            Prefix =  LoadCSS(Prefix);
+            string SecContent = Prefix;
             List<string> firstsection = eb.GetFirstChapter();
             foreach (string s in firstsection) SecContent += s;
             SectionContent.NavigateToString(SecContent);
@@ -66,9 +67,30 @@ namespace EBookReading.Epub
         {
             var clicked = ((ListBox)sender).SelectedValue;
             List<string> sections = eb.GetChapter(clicked.ToString());
-            
-            string chapter = prefix;
-            foreach(string s in sections) chapter += s;            
+            LoadChapter(sections);
+            ChapterNumber = eb.GetPlayOrder(clicked.ToString());
+        }
+        private void Next_Chapter(object sender, EventArgs e)
+        {
+            List<string> sections = eb.GetChapter(ref ChapterNumber, 1);
+            LoadChapter(sections);            
+        }
+        private void Prev_Chapter(object sender, EventArgs e)
+        {            
+            if (ChapterNumber > 1)
+            {
+                List<string> sections = eb.GetChapter(ref ChapterNumber, -1 );
+                LoadChapter(sections);
+            }
+        }
+        /// <summary>
+        /// Loads the chapter into the web browser
+        /// </summary>
+        /// <param name="text"></param>
+        private void LoadChapter(List<string> text)
+        {
+            string chapter = Prefix;
+            foreach (string s in text) chapter += s;
             SectionContent.NavigateToString(chapter);
         }
     }
