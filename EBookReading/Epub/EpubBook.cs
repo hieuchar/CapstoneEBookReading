@@ -53,15 +53,15 @@ namespace EBookReading.Epub
             Style.LoadStyle(ref _newContainer, ref z);
             Container.GetContentFromContainer(ref _newContainer, ref ContainerXml);
 
-            ////Pass in the opf file from the container.xml            
+            //Pass in the opf file from the container.xml    
+            //Build the spine, toc, and manifest
             ZipArchiveEntry ContentFile = z.GetEntry(_newContainer.FullPath);
             Stream MetaStream = ContentFile.Open();
             Stream ManifestStream = ContentFile.Open();
             Stream SpineStream = ContentFile.Open();
             Content.GetMetadataFromContent(ref _newContainer, ref MetaStream);
-            Manifest.BuildManifest(ref _newContainer,  ref ManifestStream);
-            Spine.BuildSpine(ref _newContainer,  ref SpineStream);
-            
+            Manifest.BuildManifest(ref _newContainer, ref ManifestStream);
+            Spine.BuildSpine(ref _newContainer, ref SpineStream);
             ZipArchiveEntry ToCFile = null; //= z.GetEntry("OEBPS/toc.ncx");
             Stream ToCStream = null;
             foreach (ZipArchiveEntry ToCSearch in z.Entries)
@@ -69,18 +69,14 @@ namespace EBookReading.Epub
                 if (ToCSearch.Name.Contains("toc.ncx"))
                 {
                     ToCFile = ToCSearch;
-                    ToCStream = ToCSearch.Open();
+                    ToCStream = ToCFile.Open();
                     break;
                 }
             }
-            
             ToC.GetDocTitle(ref _newContainer, ref ToCStream);
-
             Stream NavMapStream = ToCFile.Open();
-            NavigationMap.BuildNavMap(ref _newContainer, ref NavMapStream);            
-            
+            NavigationMap.BuildNavMap(ref _newContainer, ref NavMapStream);
             Book.BuildBook(ref _newContainer, ref z);
-
             MetaStream.Dispose();
             ManifestStream.Dispose();
             SpineStream.Dispose();

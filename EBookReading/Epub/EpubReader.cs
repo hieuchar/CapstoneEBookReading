@@ -35,7 +35,7 @@ namespace EBookReading.Epub
         public List<string> GetFirstChapter()
         {
             var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
-            var start = sections.Min(x => x.PlayOrder);
+            int start = sections.Min(x => x.PlayOrder);
             return GetChapter(ref start, 0);
         }
         /// <summary>

@@ -6,6 +6,8 @@ using System.IO;
 using System.Xml;
 using System.IO.Compression;
 using HtmlAgilityPack;
+using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace EBookReading.Epub
 {
@@ -63,6 +65,7 @@ namespace EBookReading.Epub
             {
                 foreach (NavPoint _navPoint in container.ContentOPF.ContentToC.ePubNavMap.NavMap)
                 {
+                    
                     tempSection = new Section();
                     tempSection.PlayOrder = _navPoint.PlayOrder;
                     var x = z.Entries.Where(y => y.Name.Contains(_navPoint.Src));
@@ -73,10 +76,66 @@ namespace EBookReading.Epub
                     {
                         foreach (HtmlNode _paragraph in htmlNodeList)
                         {
+                            if (_paragraph.OuterHtml.Contains("img"))
+                            {
+                                string path = System.IO.Path.GetTempPath();
+
+                                HtmlNodeCollection ChildNodes = _paragraph.ChildNodes;                                
+                                string input = _paragraph.InnerHtml;
+                                string original = Regex.Match(input, "<img.+?src=[\"'](.+?)[\"'].*?>", RegexOptions.IgnoreCase).Groups[1].Value;
+
+                                if (original.Length > 1)
+                                {
+                                    string temp = original.Replace("\\", "");
+                                    string[] imageValue = temp.Split('/');
+                                    var image = z.Entries.Where(img => img.FullName.Contains(imageValue[imageValue.Count() - 1])).First();
+                                    path += imageValue[imageValue.Count() - 1];
+                                    image.ExtractToFile(path, true);
+                                    _paragraph.InnerHtml = _paragraph.InnerHtml.Replace(original, "file://" + path);
+                                }
+                            }
                             tempSection.Paragraph.Add(_paragraph.OuterHtml);
                         }
                     }
+                    htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//image");
+                    if(htmlNodeList != null)
+                    {
+                        foreach(HtmlNode _image in htmlNodeList)
+                        {
+                            string path = System.IO.Path.GetTempPath();
+                            var y = _image.GetAttributeValue("xlink:href", null);
+                            if (y != null)
+                            {
+                                string[] imageValue = y.Split('/');
+                                var image = z.Entries.Where(img => img.FullName.Contains(imageValue[imageValue.Count() - 1])).First();
+                                path += imageValue[imageValue.Count() - 1];
+                                image.ExtractToFile(path, true);                                
+                                _image.SetAttributeValue("xlink:href", "file://" + path);                                
+                            }
+                            string s = _image.OuterHtml.Replace("image", "img");
+                            s = s.Replace("xlink:href", "src");
+                            tempSection.Paragraph.Add(s);
+                        }
+                    }
+                    //htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//img");
+                    //if(htmlNodeList != null)
+                    //{
+                    //    foreach (HtmlNode _image in htmlNodeList)
+                    //    {
+                    //        string path = System.IO.Path.GetTempPath();
+                    //        var y = _image.GetAttributeValue("src", null);
+                    //        if(y != null)
+                    //        {
+                    //            string[] imageValue = y.Split('/');
+                    //            var image = z.Entries.Where(img => img.FullName.Contains(imageValue[imageValue.Count() - 1])).First();
+                    //            path += imageValue[imageValue.Count() - 1];
+                    //            image.ExtractToFile(path, true);
+                    //            _image.SetAttributeValue("src", "file://" + path);
+                    //        }
+                    //        tempSection.Paragraph.Add(_image.OuterHtml);
 
+                    //    }
+                    //}
                     container.FullBook.BookContents.Add(tempSection);
                 }
             }

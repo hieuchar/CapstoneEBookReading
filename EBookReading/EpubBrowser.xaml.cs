@@ -32,15 +32,17 @@ namespace EBookReading.Epub
         {            
             eb = new EpubReader();
             eb.CreateBook(FilePath);
-            Prefix =  LoadCSS(Prefix);
+            LoadCSS();
             string SecContent = Prefix;
+            
             List<string> firstsection = eb.GetFirstChapter();
             foreach (string s in firstsection) SecContent += s;
-            SectionContent.NavigateToString(SecContent);
             
+            Console.WriteLine(SecContent);
+            SectionContent.NavigateToString(SecContent);            
             LoadToC();           
         }
-        private string LoadCSS(string input)
+        private void LoadCSS()
         {          
             string res = "";
             var z = eb.GetCSS();
@@ -48,8 +50,8 @@ namespace EBookReading.Epub
             {
                 res += s;
             }
-            input = input.Replace("stylereplace", res);
-            return input;
+            Prefix = Prefix.Replace("stylereplace", res);
+            
             //HTMLDocument CurrentDocument = x.DomDocument;
             //IHTMLStyleSheet styleSheet = CurrentDocument.createStyleSheet("", 0);
             //StreamReader streamReader = new StreamReader(@"..\browser.css"); //browser.css is Stylesheet file
@@ -69,14 +71,17 @@ namespace EBookReading.Epub
             List<string> sections = eb.GetChapter(clicked.ToString());
             LoadChapter(sections);
             ChapterNumber = eb.GetPlayOrder(clicked.ToString());
+            Console.WriteLine(ChapterNumber);
         }
         private void Next_Chapter(object sender, EventArgs e)
         {
+            Console.WriteLine(ChapterNumber);
             List<string> sections = eb.GetChapter(ref ChapterNumber, 1);
             LoadChapter(sections);            
         }
         private void Prev_Chapter(object sender, EventArgs e)
-        {            
+        {
+            Console.WriteLine(ChapterNumber);
             if (ChapterNumber > 1)
             {
                 List<string> sections = eb.GetChapter(ref ChapterNumber, -1 );
@@ -91,6 +96,7 @@ namespace EBookReading.Epub
         {
             string chapter = Prefix;
             foreach (string s in text) chapter += s;
+            Console.WriteLine(chapter);
             SectionContent.NavigateToString(chapter);
         }
     }
