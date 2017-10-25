@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using mshtml;
+using System.Windows.Navigation;
 
 namespace EBookReading.Epub
 {
@@ -24,6 +25,7 @@ namespace EBookReading.Epub
         string Prefix = "<head> <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'> <style> stylereplace </style> </head>";
         EpubReader eb;
         int ChapterNumber;
+        double CurrentZoom = 1.0;
         public EpubBrowser()
         {
             InitializeComponent();
@@ -37,9 +39,10 @@ namespace EBookReading.Epub
             
             List<string> firstsection = eb.GetFirstChapter();
             foreach (string s in firstsection) SecContent += s;
+
             
-            Console.WriteLine(SecContent);
-            SectionContent.NavigateToString(SecContent);            
+            SectionContent.NavigateToString(SecContent);
+            SectionContent.Navigated += RefreshZoom;
             LoadToC();           
         }
         private void LoadCSS()
@@ -64,6 +67,18 @@ namespace EBookReading.Epub
             List<string> ToCList = eb.GetToC();
             ToC.ItemsSource = ToCList;
             ToC.MouseDoubleClick += Open_Chapter;
+        }
+        private void Zoom_In(object sender, EventArgs e)
+        {
+            mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
+            CurrentZoom += .1;
+            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
+        }
+        private void Zoom_Out(object sender, EventArgs e)
+        {
+            mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
+            CurrentZoom -= .1;
+            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
         }
         private void Open_Chapter(object sender, EventArgs e)
         {
@@ -93,11 +108,18 @@ namespace EBookReading.Epub
         /// </summary>
         /// <param name="text"></param>
         private void LoadChapter(List<string> text)
-        {
+        {            
             string chapter = Prefix;
             foreach (string s in text) chapter += s;
             Console.WriteLine(chapter);
-            SectionContent.NavigateToString(chapter);
+            SectionContent.NavigateToString(chapter);           
+           
+        }
+        private void RefreshZoom(Object sender, NavigationEventArgs e)
+        {
+            mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
+            
+            if(doc.body != null) doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
         }
     }
 }

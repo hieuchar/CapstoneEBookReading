@@ -60,14 +60,42 @@ namespace EBookReading.Epub
         public List<string> GetChapter(ref int ChapterOrder, int increment)
         {
             var sections = book.NewContainer.ContentOPF.ContentToC.ePubNavMap.NavMap;
-            Section res = null;
-            foreach (NavPoint s in sections)
+            if (sections.Count > 1)
             {
-                if (s.PlayOrder == ChapterOrder + increment)
-                {                   
-                    res = book.NewContainer.FullBook.BookContents.Where(x => x.PlayOrder == s.PlayOrder).FirstOrDefault();
+                Section res = null;
+                foreach (NavPoint s in sections)
+                {
+                    if (s.PlayOrder == ChapterOrder + increment)
+                    {
+                        res = book.NewContainer.FullBook.BookContents.Where(x => x.PlayOrder == s.PlayOrder).FirstOrDefault();
+                    }
+                }
+                if (res != null)
+                {
+                    ChapterOrder += increment;
+                    return res.Paragraph;
+                }
+                else if (ChapterOrder + increment > sections.Min(x => x.PlayOrder) && ChapterOrder + increment <= sections.Max(x => x.PlayOrder))
+                {
+                    ChapterOrder += increment;
+                    return GetChapter(ref ChapterOrder, increment);
+                }
+                else
+                {
+                    return GetChapter(ref ChapterOrder, 0);
                 }
             }
+            else
+            {
+                return LoadFromContent(ref ChapterOrder, increment);
+            }
+        }
+        public List<string> LoadFromContent(ref int ChapterOrder, int increment)
+        {
+            var sections = book.NewContainer.FullBook.BookContents;
+            int order = ChapterOrder;
+            Section res = null;
+            res = sections.Where(x => x.PlayOrder == order + increment).FirstOrDefault();
             if (res != null)
             {
                 ChapterOrder += increment;
@@ -76,11 +104,11 @@ namespace EBookReading.Epub
             else if (ChapterOrder + increment > sections.Min(x => x.PlayOrder) && ChapterOrder + increment <= sections.Max(x => x.PlayOrder))
             {
                 ChapterOrder += increment;
-                return GetChapter(ref ChapterOrder, increment);
+                return LoadFromContent(ref ChapterOrder, increment);
             }
             else
             {
-                return GetChapter(ref ChapterOrder, 0);
+                return LoadFromContent(ref ChapterOrder, 0);
             }
         }
         /// <summary>
