@@ -28,19 +28,16 @@ namespace EBookReading.Epub
         double CurrentZoom = 1.0;
         public EpubBrowser()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
         public void DisplayBook(string FilePath)
         {            
             eb = new EpubReader();
             eb.CreateBook(FilePath);
             LoadCSS();
-            string SecContent = Prefix;
-            
+            string SecContent = Prefix;            
             List<string> firstsection = eb.GetFirstChapter();
-            foreach (string s in firstsection) SecContent += s;
-
-            
+            foreach (string s in firstsection) SecContent += s;            
             SectionContent.NavigateToString(SecContent);
             SectionContent.Navigated += RefreshZoom;
             LoadToC();           
@@ -53,14 +50,7 @@ namespace EBookReading.Epub
             {
                 res += s;
             }
-            Prefix = Prefix.Replace("stylereplace", res);
-            
-            //HTMLDocument CurrentDocument = x.DomDocument;
-            //IHTMLStyleSheet styleSheet = CurrentDocument.createStyleSheet("", 0);
-            //StreamReader streamReader = new StreamReader(@"..\browser.css"); //browser.css is Stylesheet file
-            //string text = streamReader.ReadToEnd();
-            //streamReader.Close();
-            //styleSheet.cssText = text;
+            Prefix = Prefix.Replace("stylereplace", res);           
         }
         private void LoadToC()
         {

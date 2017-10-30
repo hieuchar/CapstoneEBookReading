@@ -37,8 +37,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.6.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.6.0\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.6.2.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.6.2\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="itextsharp, Version=5.5.12.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.12\lib\itextsharp.dll</HintPath>
@@ -46,8 +46,12 @@
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
+    <Reference Include="SharpCompress, Version=0.18.2.0, Culture=neutral, PublicKeyToken=afb0a02973931d96, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpCompress.0.18.2\lib\net45\SharpCompress.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Windows.Forms" />
@@ -69,6 +73,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="ComicBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="EpubBrowser.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -83,6 +91,16 @@
     </Compile>
     <Compile Include="AppData.cs" />
     <Compile Include="BookInfo.cs" />
+    <Compile Include="CBR\CBRBook.cs" />
+    <Compile Include="CBR\CBRMeta.cs" />
+    <Compile Include="CBR\CBRReader.cs" />
+    <Compile Include="CBZ\CBZBook.cs" />
+    <Compile Include="CBZ\CBZMeta.cs" />
+    <Compile Include="CBZ\CBZReader.cs" />
+    <Compile Include="ComicBookAbstract.cs" />
+    <Compile Include="ComicBrowser.xaml.cs">
+      <DependentUpon>ComicBrowser.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Commands.cs" />
     <Compile Include="Epub\Book.cs" />
     <Compile Include="Epub\Container.cs" />

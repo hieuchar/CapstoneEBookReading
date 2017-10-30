@@ -1,5 +1,5 @@
 ﻿
-using EBookReading.Epub;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,12 +17,10 @@ namespace EBookReading
         private List<BookInfo> Library = new List<BookInfo>();
         public MainWindow()
         {
-            InitializeComponent();
-            
+            InitializeComponent();            
             AppData.LoadData("EBookPaths.sav");
             CreateGrid();
-            RefreshList();
-            
+            RefreshList();           
             
         }
         #region File Loading
@@ -56,7 +54,7 @@ namespace EBookReading
         {
             //Open up a file explorer to add a specific ebook
             var AddBookDialog = new System.Windows.Forms.OpenFileDialog();
-            AddBookDialog.Filter = "Ebook Files | *.mobi; *.pdf; *.epub";
+            AddBookDialog.Filter = "Ebook Files | *.mobi; *.pdf; *.epub; *.cbr; *.cbz";
             AddBookDialog.InitialDirectory = @"C:\";
             System.Windows.Forms.DialogResult result = AddBookDialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)

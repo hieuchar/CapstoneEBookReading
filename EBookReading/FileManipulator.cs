@@ -1,4 +1,5 @@
-﻿using EBookReading.Epub;
+﻿using EBookReading.CBR;
+using EBookReading.Epub;
 using HtmlAgilityPack;
 using iTextSharp.text.pdf;
 using System.Collections.Generic;
@@ -15,10 +16,14 @@ namespace EBookReading
             var PDFList = System.IO.Directory.GetFiles(path, "*.pdf");
             var EpubList = System.IO.Directory.GetFiles(path, "*.epub");
             var MobiList = System.IO.Directory.GetFiles(path, "*.mobi");
+            var CBRList = System.IO.Directory.GetFiles(path, "*.cbr");
+            var CBZList = System.IO.Directory.GetFiles(path, "*.cbz"); 
             List<string> result = new List<string>();
             result.AddRange(PDFList);
             result.AddRange(EpubList);
             result.AddRange(MobiList);
+            result.AddRange(CBRList);
+            result.AddRange(CBZList);
             return result;
         }
         public static List<BookInfo> CreateBooksFromPaths(List<string> paths)
@@ -34,12 +39,8 @@ namespace EBookReading
         }
         public static BookInfo CreateBookFromPath(string path)
         {
-
-
             BookInfo temp = new BookInfo(path);
             temp.AddInformation(GetBookInformation(path));
-
-
             return temp;
         }
         public static List<string> GetBookInformation(string FilePath)
@@ -68,7 +69,7 @@ namespace EBookReading
                     break;
                 case "epub":
                     EpubReader eb = new EpubReader();
-                    eb.CreateBook(FilePath);
+                    eb.CreatePartialBook(FilePath);
                     info.Add(eb.GetTitle());
                     info.Add(eb.GetAuthor());                    
                     break;
@@ -104,15 +105,20 @@ namespace EBookReading
                         PdfWindow.Title = Path.GetFileNameWithoutExtension(b.FilePath);
                     }
                     PdfWindow.Show();
-                    PdfWindow.Content.Source = new System.Uri(b.FilePath);
+                    PdfWindow.PDFContent.Source = new System.Uri(b.FilePath);
                     break;
                 case ".epub":                    
                     EpubBrowser EpubWindow = new EpubBrowser();
                     EpubWindow.DisplayBook(b.FilePath);                    
                     EpubWindow.Show();
                     break;
-
                 case ".mobi":
+                    break;
+                case ".cbr":
+                case ".cbz":
+                    ComicBrowser CB = new ComicBrowser();
+                    CB.DisplayBook(b.FilePath);
+                    CB.Show();
                     break;
             }
         }

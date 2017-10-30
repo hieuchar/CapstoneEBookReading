@@ -1,0 +1,17 @@
+﻿<Window x:Class="EBookReading.ComicBrowser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"      
+        xmlns:CustomCommand="clr-namespace:EBookReading"      
+        mc:Ignorable="d"
+        Title="Comic Browser" Height="825" Width="600">
+    <Window.CommandBindings>       
+        <CommandBinding Command="CustomCommand:Commands.NextPage" CanExecute="NextPageCommand_CanExecute" Executed="NextPageCommand_Executed"/>
+        <CommandBinding Command="CustomCommand:Commands.PrevPage" CanExecute="PrevPageCommand_CanExecute" Executed="PrevPageCommand_Executed" />
+    </Window.CommandBindings>
+    <Grid>
+        <Image Name="ImageContent" Stretch="Fill">            
+        </Image>
+    </Grid>
+</Window>

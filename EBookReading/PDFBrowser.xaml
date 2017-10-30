@@ -7,6 +7,6 @@
         mc:Ignorable="d"
         Title="PDFBrowser" Height="auto" Width="auto">
     <Grid>
-        <WebBrowser Name="Content"></WebBrowser>
+        <WebBrowser Name="PDFContent"></WebBrowser>
     </Grid>
 </Window>

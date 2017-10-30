@@ -13,7 +13,7 @@ namespace EBookReading
     [Serializable]
     class MyAppData
     {
-        public List<string> EbookPaths;
+       public List<string> EbookPaths;
        public List<string> FolderPaths;
 
         public MyAppData()
@@ -77,7 +77,6 @@ namespace EBookReading
             }
             finally
             {
-
                 if (null != LoadStream)
                 {
                     Data.EbookPaths = LoadData.EbookPaths;

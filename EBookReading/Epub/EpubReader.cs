@@ -24,6 +24,11 @@ namespace EBookReading.Epub
             book = new EpubBook();            
             book.LoadBook(FilePath);  
         }
+        public void CreatePartialBook(string FilePath)
+        {
+            book = new EpubBook();
+            book.LoadInfo(FilePath);
+        }
         public string GetTitle()
         {
             return book.NewContainer.ContentOPF.Title;

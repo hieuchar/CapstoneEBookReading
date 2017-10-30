@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:CustomCommand="clr-namespace:EBookReading"        
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="650">
+        Title="Main Window" Height="800" Width="650">
     <Window.CommandBindings>
         
         <CommandBinding Command="CustomCommand:Commands.AddFolder" CanExecute="AddFolderCommand_CanExecute" Executed="AddFolderCommand_Executed"/>

@@ -29,24 +29,22 @@ namespace EBookReading.Epub
             get { return _newContainer; }
             set { _newContainer = value; }
         }
-
-        public static bool isValid(string path)
+        //Creates a partial ebook with only metadata for the app to display to the user. Does not load images/text.
+        public void LoadInfo(string FilePath)
         {
-            //Check to ensure that this is a standard, valid ePub document. By definition, the mimetype file 
-            //must be included, and it must contain only "application/epub+zip"
-
-            //string localPath = Directory.GetCurrentDirectory();
-            using (StreamReader sr = new StreamReader(Path.Combine(path, "mimetype")))
-            {
-                return (sr.ReadLine() == "application/epub+zip");
-            }
+            LocalDirectory = FilePath;
+            ZipArchive z = ZipFile.OpenRead(FilePath);
+            ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");
+            Container.GetContentFromContainer(ref _newContainer, ref ContainerXml);
+            ZipArchiveEntry ContentFile = z.GetEntry(_newContainer.FullPath);
+            Stream MetaStream = ContentFile.Open();
+            Content.GetMetadataFromContent(ref _newContainer, ref MetaStream);
         }
-
-        public void LoadBook(string path)
+        public void LoadBook(string FilePath)
         {
-            LocalDirectory = path;
+            LocalDirectory = FilePath;
             //Extract the files for each part of the book
-            ZipArchive z = ZipFile.OpenRead(path);
+            ZipArchive z = ZipFile.OpenRead(FilePath);
 
             //Get the container.xml file from the epub archive
             ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");

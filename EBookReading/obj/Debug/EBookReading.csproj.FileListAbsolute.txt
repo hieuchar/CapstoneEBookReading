@@ -39,3 +39,6 @@ D:\Capstone\EBookReading\EBookReading\bin\Debug\HtmlAgilityPack.pdb
 D:\Capstone\EBookReading\EBookReading\bin\Debug\HtmlAgilityPack.xml
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EpubBrowser.g.cs
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EpubBrowser.baml
+D:\Capstone\EBookReading\EBookReading\obj\Debug\ComicBrowser.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\ComicBrowser.baml
+D:\Capstone\EBookReading\EBookReading\bin\Debug\SharpCompress.dll
