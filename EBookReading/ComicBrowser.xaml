@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"      
         xmlns:CustomCommand="clr-namespace:EBookReading"      
         mc:Ignorable="d"
-        Title="Comic Browser" Height="825" Width="600">
+        Title="Comic Browser" Height="825" Width="700">
     <Window.CommandBindings>       
         <CommandBinding Command="CustomCommand:Commands.NextPage" CanExecute="NextPageCommand_CanExecute" Executed="NextPageCommand_Executed"/>
         <CommandBinding Command="CustomCommand:Commands.PrevPage" CanExecute="PrevPageCommand_CanExecute" Executed="PrevPageCommand_Executed" />

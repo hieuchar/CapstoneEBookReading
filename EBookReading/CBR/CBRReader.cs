@@ -16,12 +16,10 @@ namespace EBookReading.CBR
             book = new CBRBook();
             book.LoadBook(FilePath);
         }
-
         public override int GetMaxPage()
         {
             return book.Entries.Count();
         }
-
         public override Image GetPage(int PageNumber)
         {
             return book.LoadPage(PageNumber);

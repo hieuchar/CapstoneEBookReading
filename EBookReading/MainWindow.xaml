@@ -20,7 +20,8 @@
             </MenuItem>
             <Button Click="Delete_Book">Delete</Button>
         </Menu>
-        <DataGrid Grid.Row="0" Name="LibraryDataGrid" MaxHeight="500" MaxWidth="550" IsReadOnly="True">
+        <TextBox KeyDown="SearchKeyDownHandler"></TextBox>
+        <DataGrid Name="LibraryDataGrid" MaxHeight="500" MaxWidth="550" IsReadOnly="True">
             <DataGrid.Columns>                
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

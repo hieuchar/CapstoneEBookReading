@@ -63,7 +63,6 @@ namespace EBookReading
             bitmapImage.EndInit();
             ms.Dispose();
             return bitmapImage;
-
         }
         public void OnWindowClosing(object sender, CancelEventArgs e)
         {           

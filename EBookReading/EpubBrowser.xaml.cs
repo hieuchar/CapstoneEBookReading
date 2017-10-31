@@ -76,17 +76,17 @@ namespace EBookReading.Epub
             List<string> sections = eb.GetChapter(clicked.ToString());
             LoadChapter(sections);
             ChapterNumber = eb.GetPlayOrder(clicked.ToString());
-            Console.WriteLine(ChapterNumber);
+            
         }
         private void Next_Chapter(object sender, EventArgs e)
         {
-            Console.WriteLine(ChapterNumber);
+            
             List<string> sections = eb.GetChapter(ref ChapterNumber, 1);
             LoadChapter(sections);            
         }
         private void Prev_Chapter(object sender, EventArgs e)
         {
-            Console.WriteLine(ChapterNumber);
+            
             if (ChapterNumber > 1)
             {
                 List<string> sections = eb.GetChapter(ref ChapterNumber, -1 );
@@ -100,8 +100,7 @@ namespace EBookReading.Epub
         private void LoadChapter(List<string> text)
         {            
             string chapter = Prefix;
-            foreach (string s in text) chapter += s;
-            Console.WriteLine(chapter);
+            foreach (string s in text) chapter += s;            
             SectionContent.NavigateToString(chapter);           
            
         }

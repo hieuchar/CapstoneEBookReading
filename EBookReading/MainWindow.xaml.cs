@@ -98,6 +98,40 @@ namespace EBookReading
             foreach (BookInfo b in Library)
             {
                 LibraryDataGrid.Items.Add(b);
+            }            
+        }
+        public void RefreshSearch(List<BookInfo> SearchResults)
+        {
+            var BookPath = AppData.GetBookPaths();            
+            LibraryDataGrid.Items.Clear();
+            foreach (BookInfo b in SearchResults)
+            {
+                LibraryDataGrid.Items.Add(b);
+            }
+        }
+        private void SearchKeyDownHandler(object sender, KeyEventArgs e)
+        {            
+            if (e.Key == Key.Return)
+            {
+                LibraryDataGrid.Items.Clear();
+                TextBox tb = (TextBox)sender;
+                List<BookInfo> result = new List<BookInfo>();
+                if (tb.Text.Length > 0)
+                {
+                    Console.WriteLine(tb.Text);
+                    foreach (BookInfo b in Library)
+                    {
+                        if (b.Contains(tb.Text))
+                        {
+                            result.Add(b);
+                        }
+                    }
+                }
+                else
+                {
+                    result = Library;
+                }
+                RefreshSearch(result);
             }
         }
         //Sets up the data grid

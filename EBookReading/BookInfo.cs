@@ -30,5 +30,9 @@ namespace EBookReading
             Title = info[0];
             Author = info[1];
         }
+        public bool Contains(string target)
+        {
+            return _author.ToLower().Contains(target) || _title.ToLower().Contains(target) || _extension.ToLower().Contains(target);
+        }
     }
 }
