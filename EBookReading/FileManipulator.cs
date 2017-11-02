@@ -17,7 +17,7 @@ namespace EBookReading
             var EpubList = System.IO.Directory.GetFiles(path, "*.epub");
             var MobiList = System.IO.Directory.GetFiles(path, "*.mobi");
             var CBRList = System.IO.Directory.GetFiles(path, "*.cbr");
-            var CBZList = System.IO.Directory.GetFiles(path, "*.cbz"); 
+            var CBZList = System.IO.Directory.GetFiles(path, "*.cbz");
             List<string> result = new List<string>();
             result.AddRange(PDFList);
             result.AddRange(EpubList);
@@ -31,16 +31,22 @@ namespace EBookReading
             List<BookInfo> Books = new List<BookInfo>();
             foreach (string s in paths)
             {
-                BookInfo temp = new BookInfo(s);
-                temp.AddInformation(GetBookInformation(s));
-                Books.Add(temp);
+                if (System.IO.File.Exists(s))
+                {
+                    BookInfo temp = new BookInfo(s);
+                    temp.AddInformation(GetBookInformation(s));
+                    Books.Add(temp);
+                }
             }
             return Books;
         }
         public static BookInfo CreateBookFromPath(string path)
         {
+
             BookInfo temp = new BookInfo(path);
             temp.AddInformation(GetBookInformation(path));
+
+
             return temp;
         }
         public static List<string> GetBookInformation(string FilePath)
@@ -71,7 +77,7 @@ namespace EBookReading
                     EpubReader eb = new EpubReader();
                     eb.CreatePartialBook(FilePath);
                     info.Add(eb.GetTitle());
-                    info.Add(eb.GetAuthor());                    
+                    info.Add(eb.GetAuthor());
                     break;
                 default:
                     info.Add(Path.GetFileNameWithoutExtension(FilePath));
@@ -107,9 +113,9 @@ namespace EBookReading
                     PdfWindow.Show();
                     PdfWindow.PDFContent.Source = new System.Uri(b.FilePath);
                     break;
-                case ".epub":                    
+                case ".epub":
                     EpubBrowser EpubWindow = new EpubBrowser();
-                    EpubWindow.DisplayBook(b.FilePath);                    
+                    EpubWindow.DisplayBook(b.FilePath);
                     EpubWindow.Show();
                     break;
                 case ".mobi":

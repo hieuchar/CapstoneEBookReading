@@ -1,7 +1,10 @@
 ﻿
 
+using IronPython.Hosting;
+using Microsoft.Scripting.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -10,18 +13,41 @@ using System.Windows.Data;
 using System.Windows.Input;
 namespace EBookReading
 {
-   
+
     public partial class MainWindow : Window
     {
-        
+
         private List<BookInfo> Library = new List<BookInfo>();
         public MainWindow()
         {
-            InitializeComponent();            
+            InitializeComponent();
             AppData.LoadData("EBookPaths.sav");
             CreateGrid();
-            RefreshList();           
-            
+            RefreshList();
+            LoadMobiTest();
+        }
+        public void LoadMobiTest()
+        {
+            ProcessStartInfo start = new ProcessStartInfo();            
+            start.FileName = "D:/Capstone/EBookReading/EBookReading/PythonScript/mobiunpack 32.exe";
+            start.Arguments = string.Format("{0} {1}", "\"C:/Users/Hieu/Desktop/Wheel Of Time/MOBI/New Spring.mobi\"", "\"C:/Users/Hieu/Desktop/Wheel Of Time/MOBI/TestFolder\"");
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = true;
+            using (Process process = Process.Start(start))
+            {
+                using (StreamReader reader = process.StandardOutput)
+                {
+                    string result = reader.ReadToEnd();
+                    
+                    Console.Write(result);
+
+                }
+            }
+            Console.Read();
+            //List<string> argv = new List<string>();
+            //argv.Add("C:\\Users\\Hieu\\Desktop\\Wheel Of Time\\MOBI\\Wheel of Time - New Spring(Prequel).mobi");
+            //argv.Add("C:\\Users\\Hieu\\Desktop\\Wheel Of Time\\MOBI\\TestFolder");
+
         }
         #region File Loading
 
@@ -59,7 +85,7 @@ namespace EBookReading
             System.Windows.Forms.DialogResult result = AddBookDialog.ShowDialog();
             if (result == System.Windows.Forms.DialogResult.OK)
             {
-                AppData.AddBookPath(AddBookDialog.FileName);                
+                AppData.AddBookPath(AddBookDialog.FileName);
                 RefreshList();
             }
         }
@@ -72,9 +98,9 @@ namespace EBookReading
         #region Deleting
         private void Delete_Book(object sender, EventArgs e)
         {
-            
-            var DeleteList = LibraryDataGrid.SelectedItems;            
-            foreach(BookInfo bi in DeleteList)
+
+            var DeleteList = LibraryDataGrid.SelectedItems;
+            foreach (BookInfo bi in DeleteList)
             {
                 AppData.DeleteBook(bi.FilePath);
             }
@@ -86,23 +112,32 @@ namespace EBookReading
         public void RefreshList()
         {
             var BookPath = AppData.GetBookPaths();
+            List<string> MissingFiles = new List<string>();
             Library.Clear();
             while (BookPath.MoveNext())
             {
-                if (!Library.Any(x => x.FilePath == BookPath.Current.ToString()))
+                if (System.IO.File.Exists(BookPath.Current.ToString()))
                 {
-                    Library.Add(FileManipulator.CreateBookFromPath(BookPath.Current.ToString()));
+                    if (!Library.Any(x => x.FilePath == BookPath.Current.ToString()))
+                    {
+                        Library.Add(FileManipulator.CreateBookFromPath(BookPath.Current.ToString()));
+                    }
                 }
+                else MissingFiles.Add(BookPath.Current.ToString());
             }
+            foreach(string s in MissingFiles)
+            {
+                AppData.DeleteBook(s);
+            }            
             LibraryDataGrid.Items.Clear();
             foreach (BookInfo b in Library)
             {
                 LibraryDataGrid.Items.Add(b);
-            }            
+            }
         }
         public void RefreshSearch(List<BookInfo> SearchResults)
         {
-            var BookPath = AppData.GetBookPaths();            
+            var BookPath = AppData.GetBookPaths();
             LibraryDataGrid.Items.Clear();
             foreach (BookInfo b in SearchResults)
             {
@@ -110,7 +145,7 @@ namespace EBookReading
             }
         }
         private void SearchKeyDownHandler(object sender, KeyEventArgs e)
-        {            
+        {
             if (e.Key == Key.Return)
             {
                 LibraryDataGrid.Items.Clear();
@@ -138,7 +173,7 @@ namespace EBookReading
         public void CreateGrid()
         {
             DataGridTextColumn TitleColumn = new DataGridTextColumn();
-            TitleColumn.Header = "Title";
+            TitleColumn.Header = "Title";            
             TitleColumn.Binding = new Binding("Title");
             LibraryDataGrid.Columns.Add(TitleColumn);
             DataGridTextColumn AuthorColumn = new DataGridTextColumn();
@@ -151,7 +186,6 @@ namespace EBookReading
             LibraryDataGrid.Columns.Add(FileTypeColumn);
         }
         //Opens a new window with the content of the book
-        
-        #endregion 
+        #endregion
     }
 }
