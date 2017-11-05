@@ -1,6 +1,6 @@
 ﻿
 
-using IronPython.Hosting;
+
 using Microsoft.Scripting.Hosting;
 using System;
 using System.Collections.Generic;
@@ -13,10 +13,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 namespace EBookReading
 {
-
     public partial class MainWindow : Window
     {
-
         private List<BookInfo> Library = new List<BookInfo>();
         public MainWindow()
         {
@@ -44,10 +42,6 @@ namespace EBookReading
                 }
             }
             Console.Read();
-            //List<string> argv = new List<string>();
-            //argv.Add("C:\\Users\\Hieu\\Desktop\\Wheel Of Time\\MOBI\\Wheel of Time - New Spring(Prequel).mobi");
-            //argv.Add("C:\\Users\\Hieu\\Desktop\\Wheel Of Time\\MOBI\\TestFolder");
-
         }
         #region File Loading
 
@@ -98,7 +92,6 @@ namespace EBookReading
         #region Deleting
         private void Delete_Book(object sender, EventArgs e)
         {
-
             var DeleteList = LibraryDataGrid.SelectedItems;
             foreach (BookInfo bi in DeleteList)
             {
