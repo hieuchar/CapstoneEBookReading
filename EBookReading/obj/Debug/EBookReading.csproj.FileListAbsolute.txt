@@ -51,3 +51,5 @@ D:\Capstone\EBookReading\EBookReading\bin\Debug\Microsoft.Scripting.xml
 D:\Capstone\EBookReading\EBookReading\bin\Debug\Microsoft.Scripting.AspNet.xml
 D:\Capstone\EBookReading\EBookReading\bin\Debug\Microsoft.Scripting.Metadata.xml
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading_Content.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\MobiBrowser.g.cs
+D:\Capstone\EBookReading\EBookReading\obj\Debug\MobiBrowser.baml

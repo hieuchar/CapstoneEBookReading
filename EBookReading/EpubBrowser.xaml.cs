@@ -106,8 +106,7 @@ namespace EBookReading.Epub
         }
         private void RefreshZoom(Object sender, NavigationEventArgs e)
         {
-            mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
-            
+            mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;            
             if(doc.body != null) doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
         }
     }

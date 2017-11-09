@@ -21,7 +21,7 @@
             <Button Click="Delete_Book">Delete</Button>
         </Menu>
         <TextBox KeyDown="SearchKeyDownHandler"></TextBox>
-        <DataGrid Name="LibraryDataGrid" MaxHeight="500" MaxWidth="550" IsReadOnly="True">
+        <DataGrid Name="LibraryDataGrid" MaxHeight="700" MaxWidth="625" IsReadOnly="True">
             <DataGrid.Columns>                
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>

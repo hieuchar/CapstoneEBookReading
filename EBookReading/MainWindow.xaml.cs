@@ -22,26 +22,11 @@ namespace EBookReading
             AppData.LoadData("EBookPaths.sav");
             CreateGrid();
             RefreshList();
-            LoadMobiTest();
+            //LoadMobiTest();
         }
         public void LoadMobiTest()
         {
-            ProcessStartInfo start = new ProcessStartInfo();            
-            start.FileName = "D:/Capstone/EBookReading/EBookReading/PythonScript/mobiunpack 32.exe";
-            start.Arguments = string.Format("{0} {1}", "\"C:/Users/Hieu/Desktop/Wheel Of Time/MOBI/New Spring.mobi\"", "\"C:/Users/Hieu/Desktop/Wheel Of Time/MOBI/TestFolder\"");
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = true;
-            using (Process process = Process.Start(start))
-            {
-                using (StreamReader reader = process.StandardOutput)
-                {
-                    string result = reader.ReadToEnd();
-                    
-                    Console.Write(result);
-
-                }
-            }
-            Console.Read();
+            
         }
         #region File Loading
 
@@ -166,7 +151,7 @@ namespace EBookReading
         public void CreateGrid()
         {
             DataGridTextColumn TitleColumn = new DataGridTextColumn();
-            TitleColumn.Header = "Title";            
+            TitleColumn.Header = "Title";
             TitleColumn.Binding = new Binding("Title");
             LibraryDataGrid.Columns.Add(TitleColumn);
             DataGridTextColumn AuthorColumn = new DataGridTextColumn();

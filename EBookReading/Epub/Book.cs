@@ -23,7 +23,7 @@ namespace EBookReading.Epub
         public Book()
         {
             BookContents = new List<Section>();
-            path = System.IO.Path.GetTempPath() + "BookImages";
+            path = System.IO.Path.GetTempPath() + "VoBookFiles";
             if (!System.IO.Directory.Exists(path)) System.IO.Directory.CreateDirectory(path);
         }
         public static Section Build(ref Container container, ref ZipArchive z, HtmlNodeCollection htmlNodeList)

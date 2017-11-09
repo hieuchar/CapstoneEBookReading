@@ -1,8 +1,11 @@
 ﻿using EBookReading.CBR;
 using EBookReading.Epub;
+using EBookReading.Mobi;
 using HtmlAgilityPack;
 using iTextSharp.text.pdf;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace EBookReading
@@ -79,6 +82,12 @@ namespace EBookReading
                     info.Add(eb.GetTitle());
                     info.Add(eb.GetAuthor());
                     break;
+                case "mobi":
+                    MobiReader mb = new MobiReader();
+                    mb.CreatePartialBook(ExtractMobi(FilePath));
+                    info.Add(mb.GetTitle());
+                    info.Add(mb.GetAuthor());
+                    break;
                 default:
                     info.Add(Path.GetFileNameWithoutExtension(FilePath));
                     info.Add("Unknown Author");
@@ -119,6 +128,10 @@ namespace EBookReading
                     EpubWindow.Show();
                     break;
                 case ".mobi":
+                    string storage = ExtractMobi(b.FilePath);
+                    MobiBrowser MobiWindow = new MobiBrowser();
+                    MobiWindow.DisplayBook(storage);
+                    MobiWindow.Show();
                     break;
                 case ".cbr":
                 case ".cbz":
@@ -127,6 +140,29 @@ namespace EBookReading
                     CB.Show();
                     break;
             }
+        }
+        private static string ExtractMobi(string FilePath)
+        {
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = "D:/Capstone/EBookReading/EBookReading/PythonScript/mobiunpack 32.exe";
+            string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + Path.GetFileNameWithoutExtension(FilePath);
+            Console.WriteLine(StoragePath);
+            if (!System.IO.Directory.Exists(StoragePath))
+            {
+                System.IO.Directory.CreateDirectory(StoragePath);
+                start.Arguments = string.Format("{0} {1}", "\"" + FilePath + "\"", "\"" + StoragePath + "\"");
+                start.UseShellExecute = false;
+                start.RedirectStandardOutput = true;
+                using (Process process = Process.Start(start))
+                {
+                    using (StreamReader reader = process.StandardOutput)
+                    {
+                        string result = reader.ReadToEnd();
+                        Console.Write(result);
+                    }
+                }                
+            }
+            return StoragePath;
         }
     }
 }

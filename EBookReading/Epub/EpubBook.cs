@@ -45,10 +45,9 @@ namespace EBookReading.Epub
             LocalDirectory = FilePath;
             //Extract the files for each part of the book
             ZipArchive z = ZipFile.OpenRead(FilePath);
-
-            //Get the container.xml file from the epub archive
-            ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");
             Style.LoadStyle(ref _newContainer, ref z);
+            //Get the container.xml file from the epub archive
+            ZipArchiveEntry ContainerXml = z.GetEntry("META-INF/container.xml");            
             Container.GetContentFromContainer(ref _newContainer, ref ContainerXml);
 
             //Pass in the opf file from the container.xml    
