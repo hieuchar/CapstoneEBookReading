@@ -11,6 +11,7 @@ namespace EBookReading.Mobi
     {
         public MobiContainer _newContainer;
         private string _localDirectory;
+        private string _htmlDirectory;
         public MobiBook()
         {
             NewContainer = new MobiContainer();
@@ -20,6 +21,11 @@ namespace EBookReading.Mobi
         {
             get { return _localDirectory; }
             set { _localDirectory = value; }
+        }
+        public string HTMlDirectory
+        {
+            get { return _htmlDirectory; }
+            set { _htmlDirectory = value; }
         }
         public void LoadInfo(string FilePath)
         {
@@ -43,9 +49,20 @@ namespace EBookReading.Mobi
             MobiManifest.BuildManifest(ref _newContainer, OPFFile[0]);
             MobiSpine.BuildSpine(ref _newContainer, OPFFile[0]);
             string[] ToCFile = Directory.GetFiles(FilePath, "*.ncx");
-            MobiToC.GetDocTitle(ref _newContainer, ToCFile[0]);
-            MobiNavigationMap.BuildNavMap(ref _newContainer, ToCFile[0]);
             string[] BookFile = Directory.GetFiles(FilePath, "*.html");
+            //Some Mobi files don't have a .ncx file which is a table of contents file. will create toc based off of anchor tags in the html
+            if (ToCFile.Count() >= 1)
+            {
+                MobiToC.GetDocTitle(ref _newContainer, ToCFile[0]);
+                MobiNavigationMap.BuildNavMap(ref _newContainer, ToCFile[0]);
+            }
+            else
+            {
+                MobiNavigationMap.BuildNavMapFromHtml(ref _newContainer, BookFile[0]);
+            }
+            
+            
+            HTMlDirectory = BookFile[0];
             MobiBookContent.BuildBook(ref _newContainer, BookFile[0]);
         }
     }

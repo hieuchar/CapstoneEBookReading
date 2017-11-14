@@ -37,15 +37,11 @@ namespace EBookReading.Epub
 
             HtmlDocument htmlDoc = new HtmlDocument();
             HtmlNodeCollection htmlNodeList;
-            //XmlDocument xmlDocument = new XmlDocument();
-            //XmlNodeList xmlNodeList;
-            //In this section, we create a new Book object, which contains a list of Section objects (think of as chapters)
-            //which contain a list of strings (the paragraphs in the chapters). The xmldoc.XmlResolver line is required to 
-            //ignore the DTD line in the XHTML file. 
             Section tempSection;
             //xmlDocument.XmlResolver = null;
             //For each NavPoint item in the NavMap, we're going to load the src object, and pull in each paragraph in the chapter
             //as a separate string object in a section. Then we'll create a section for each chapter, and add each section to the book.
+            //Check if the navmap actually has content in it, some books are buggy and dont' have 
             if (container.ContentOPF.ContentToC.ePubNavMap.NavMap.Count <= 1)
             {
                 int counter = 0;
@@ -76,7 +72,6 @@ namespace EBookReading.Epub
                                     image.ExtractToFile(path, true);
                                     _paragraph.InnerHtml = _paragraph.InnerHtml.Replace(original, "file://" + path);
                                 }
-
                             }
                             tempSection.Paragraph.Add(_paragraph.OuterHtml);
                         }

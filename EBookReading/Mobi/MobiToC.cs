@@ -17,7 +17,7 @@ namespace EBookReading.Mobi
         {
             DocTitle = "";
             Depth = 1;
-            ePubNavMap = new MobiNavigationMap();
+            MobiNavMap = new MobiNavigationMap();
         }
 
         public string DocTitle
@@ -32,7 +32,7 @@ namespace EBookReading.Mobi
             set { _depth = value; }
         }
 
-        public MobiNavigationMap ePubNavMap
+        public MobiNavigationMap MobiNavMap
         {
             get { return _navMap; }
             set { _navMap = value; }

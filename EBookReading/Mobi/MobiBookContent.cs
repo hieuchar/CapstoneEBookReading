@@ -27,22 +27,23 @@ namespace EBookReading.Mobi
         public static void BuildBook(ref MobiContainer container,  string BookFilePath)
         {
             
-            HtmlDocument htmlDoc = new HtmlDocument();            
-            IEnumerable<HtmlNode> htmlNodeList;
-            MobiSection tempSection;
-            //xmlDocument.XmlResolver = null;
-            //For each NavPoint item in the NavMap, we're going to load the src object, and pull in each paragraph in the chapter
-            //as a separate string object in a section. Then we'll create a section for each chapter, and add each section to the book.
-            htmlDoc.Load(BookFilePath, Encoding.UTF8);
-            htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//div").Where(x => x.InnerHtml.Length >= 5);
-            Console.WriteLine();
-            foreach (HtmlNode node in htmlNodeList)
-            {
-                
-                tempSection = new MobiSection();
-                tempSection.Paragraph.Add(node.OuterHtml);
-                container.FullBook.BookContents.Add(tempSection);
-            }            
+            //HtmlDocument htmlDoc = new HtmlDocument();            
+            //IEnumerable<HtmlNode> htmlNodeList;
+            //MobiSection tempSection;
+
+            //htmlDoc.Load(BookFilePath, Encoding.UTF8);
+            ////htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//div").Where(x => x.InnerHtml.Length >= 5);
+            ////Mobi books don't have any discerning seperation between chapters, they use anchor tags to link between chapter sections. 
+            ////I thought it worked with div but some books seperate by mbp:pagebreak
+            ////will be setting up table of contents differently
+            //htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//body");
+            //Console.WriteLine();
+            //foreach (HtmlNode node in htmlNodeList)
+            //{                
+            //    tempSection = new MobiSection();
+            //    tempSection.Paragraph.Add(node.OuterHtml);
+            //    container.FullBook.BookContents.Add(tempSection);
+            //}            
         }
     }
 }

@@ -8,5 +8,6 @@
         Title="PDFBrowser" Height="auto" Width="auto">
     <Grid>
         <WebBrowser Name="PDFContent"></WebBrowser>
+        <!--<Frame Name="PDFFrame"></Frame>-->
     </Grid>
 </Window>

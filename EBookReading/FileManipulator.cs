@@ -119,8 +119,8 @@ namespace EBookReading
                     {
                         PdfWindow.Title = Path.GetFileNameWithoutExtension(b.FilePath);
                     }
-                    PdfWindow.Show();
-                    PdfWindow.PDFContent.Source = new System.Uri(b.FilePath);
+                    PdfWindow.LoadPDF(b.FilePath);
+                    PdfWindow.Show();                    
                     break;
                 case ".epub":
                     EpubBrowser EpubWindow = new EpubBrowser();
@@ -143,8 +143,11 @@ namespace EBookReading
         }
         private static string ExtractMobi(string FilePath)
         {
+            
+            string paths = Directory.GetCurrentDirectory() + "\\mobiunpack.exe";
+            string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
             ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = "D:/Capstone/EBookReading/EBookReading/PythonScript/mobiunpack 32.exe";
+            start.FileName = paths;
             string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + Path.GetFileNameWithoutExtension(FilePath);
             Console.WriteLine(StoragePath);
             if (!System.IO.Directory.Exists(StoragePath))

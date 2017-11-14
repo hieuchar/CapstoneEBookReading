@@ -35,21 +35,7 @@ namespace EBookReading.Mobi
         public string Src
         {
             get { return _src; }
-            set
-            {
-                value = value.Contains('#') ? value.Substring(0, value.LastIndexOf('#')) : value;
-                if (value.Contains('/'))
-                {
-                    string[] split = value.Split('/');
-                    value = split.Last<string>();
-                }
-                else if (value.Contains('\\'))
-                {
-                    string[] split = value.Split('\\');
-                    value = split.Last<string>();
-                }
-                _src = value;
-            }
+            set { _src = value; }
         }
 
         public MobiNavPoint()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -96,10 +97,28 @@ namespace EBookReading.Mobi
             XmlNodeList xmlNodeList;
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.Schemas.XmlResolver = null;
-            //Replace all <br> tags which cause the xml reader to break with <br/> tags
-            File.WriteAllText(FilePath, File.ReadAllText(FilePath).Replace("<br>", "<br/>"));
+            string editedopf = Path.GetDirectoryName(FilePath) + "\\" + Path.GetFileNameWithoutExtension(FilePath) + "_edited.opf";
+            string s = "";
+            using (StreamReader sr = new StreamReader(FilePath))
+            {
+                s = sr.ReadToEnd().Replace("<br>", "<br/>");
+                s = s.Replace("&copy;", "&#169");                
+            }
+            File.Delete(FilePath);
+            StreamWriter sw = new StreamWriter(FilePath, false);                     
+            //Fixes bad ampersands
+            Regex ampersandReg = new Regex("&(?![a-zA-Z]{2,6};|#[0-9]{2,4};)");
+            string amper = "&amp;";
+            s = ampersandReg.Replace(s, amper);            
+            sw.AutoFlush = true;
+            sw.Write(s);
+            sw.Close();
+            
+            //Writes the opf file back for xml reading
+            //File.WriteAllText(FilePath, s);
+
             XmlReader xmlReader = XmlReader.Create(FilePath, settings);
-            XmlDocument xmlDocument = new XmlDocument();
+            XmlDocument xmlDocument = new XmlDocument();            
             xmlDocument.Load(xmlReader);
 
             xmlNodeList = xmlDocument.GetElementsByTagName("*");

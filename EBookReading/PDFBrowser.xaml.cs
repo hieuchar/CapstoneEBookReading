@@ -23,5 +23,13 @@ namespace EBookReading
         {
             InitializeComponent();
         }
+        public void LoadPDF(string filepath)
+        {
+            
+            PDFContent.Navigate(new Uri(filepath));
+            
+            //PDFContent.Source = new System.Uri(filepath);
+            
+        }
     }
 }

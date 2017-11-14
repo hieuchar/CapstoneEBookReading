@@ -62,13 +62,13 @@ namespace EBookReading.Epub
         {
             mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
             CurrentZoom += .1;
-            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
+            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString() + ";");
         }
         private void Zoom_Out(object sender, EventArgs e)
         {
             mshtml.IHTMLDocument2 doc = SectionContent.Document as mshtml.IHTMLDocument2;
             CurrentZoom -= .1;
-            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString().Replace(",", ".") + ";");
+            doc.parentWindow.execScript("document.body.style.zoom=" + CurrentZoom.ToString() + ";");
         }
         private void Open_Chapter(object sender, EventArgs e)
         {

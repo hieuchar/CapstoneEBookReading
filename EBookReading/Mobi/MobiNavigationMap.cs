@@ -1,7 +1,9 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
 
@@ -31,7 +33,22 @@ namespace EBookReading.Mobi
         {
             NavMap.Clear();
         }
-
+        public static void BuildNavMapFromHtml(ref MobiContainer container, string BookFilePath)
+        {
+            HtmlDocument htmlDoc = new HtmlDocument();
+            IEnumerable<HtmlNode> htmlNodeList;           
+            htmlDoc.Load(BookFilePath, Encoding.UTF8);
+            htmlNodeList = htmlDoc.DocumentNode.SelectNodes("//a").Distinct();
+            Console.WriteLine();
+            int counter = 1;
+            for (int i = (htmlNodeList.Count() - 1) / 2; i < htmlNodeList.Count();i++ )
+            {
+                if(htmlNodeList.ElementAt(i).Id != "")
+                {
+                    container.ContentOPF.ContentToC.MobiNavMap.NavMap.Add(new MobiNavPoint(counter, counter +"", counter++ +"", "#" + htmlNodeList.ElementAt(i).Id));
+                }
+            }
+        }
         public static void BuildNavMap(ref MobiContainer container, string NavMapFilePath)
         {
             XmlDocument xmlDocument = new XmlDocument();
@@ -58,11 +75,13 @@ namespace EBookReading.Mobi
                 {
                     if (subElement.Name == "content")
                     {
-                        navPointSrc = subElement.GetAttribute("src");
+                        string s = subElement.GetAttribute("src");
+                        var y = Regex.Match(s, "#.*");
+                        navPointSrc = y.Value;
                         break;
                     }
                 }
-                container.ContentOPF.ContentToC.ePubNavMap.NavMap.Add(new MobiNavPoint(navPointPlayOrder, navPointID, navLabel, navPointSrc));
+                container.ContentOPF.ContentToC.MobiNavMap.NavMap.Add(new MobiNavPoint(navPointPlayOrder, navPointID, navLabel, navPointSrc));
             }
         }
     }

@@ -14,7 +14,7 @@
         <ListBox ScrollViewer.CanContentScroll="True"  Name="ToC" Grid.Column="0"></ListBox>
         <Grid Name="BookGrid" Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="75*"></RowDefinition>
+                <RowDefinition Height="85*"></RowDefinition>
                 <RowDefinition Height="15*"></RowDefinition>
             </Grid.RowDefinitions>
             <WebBrowser Name="BookContent" Grid.Row="0"></WebBrowser>
