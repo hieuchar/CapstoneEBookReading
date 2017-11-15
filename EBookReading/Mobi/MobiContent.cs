@@ -97,15 +97,15 @@ namespace EBookReading.Mobi
             XmlNodeList xmlNodeList;
             XmlReaderSettings settings = new XmlReaderSettings();
             settings.Schemas.XmlResolver = null;
-            string editedopf = Path.GetDirectoryName(FilePath) + "\\" + Path.GetFileNameWithoutExtension(FilePath) + "_edited.opf";
+            string editedopf = Path.GetDirectoryName(FilePath) + "\\" + Path.GetFileNameWithoutExtension(FilePath) + "_edited.xml";
             string s = "";
             using (StreamReader sr = new StreamReader(FilePath))
             {
                 s = sr.ReadToEnd().Replace("<br>", "<br/>");
                 s = s.Replace("&copy;", "&#169");                
             }
-            File.Delete(FilePath);
-            StreamWriter sw = new StreamWriter(FilePath, false);                     
+            //File.Delete(FilePath);
+            StreamWriter sw = new StreamWriter(editedopf, false);                     
             //Fixes bad ampersands
             Regex ampersandReg = new Regex("&(?![a-zA-Z]{2,6};|#[0-9]{2,4};)");
             string amper = "&amp;";
@@ -117,10 +117,10 @@ namespace EBookReading.Mobi
             //Writes the opf file back for xml reading
             //File.WriteAllText(FilePath, s);
 
-            XmlReader xmlReader = XmlReader.Create(FilePath, settings);
+            XmlReader xmlReader = XmlReader.Create(editedopf, settings);
             XmlDocument xmlDocument = new XmlDocument();            
             xmlDocument.Load(xmlReader);
-
+            
             xmlNodeList = xmlDocument.GetElementsByTagName("*");
             foreach (XmlElement element in xmlNodeList)
             {
@@ -181,6 +181,7 @@ namespace EBookReading.Mobi
                 }
 
             }
+            xmlReader.Dispose();
         }
 
     }

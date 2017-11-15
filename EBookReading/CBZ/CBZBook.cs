@@ -32,7 +32,7 @@ namespace EBookReading.CBZ
         {
             LocalDirectory = FilePath;
             ZipArchive z = ZipArchive.Open(FilePath);
-            _entries = z.Entries.OrderBy(ze => ze.Key);           
+            _entries = z.Entries.Where(ze => ze.Size > 0).OrderBy(ze => ze.Key);           
         }
         public Image LoadPage(int PageNumber)
         {

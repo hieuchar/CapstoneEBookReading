@@ -46,8 +46,9 @@ namespace EBookReading.Mobi
             string[] OPFFile = Directory.GetFiles(FilePath, "*.opf");           
             //Build the meta data from the opf file
             MobiContent.GetMetadataFromContent(ref _newContainer, OPFFile[0]);
-            MobiManifest.BuildManifest(ref _newContainer, OPFFile[0]);
-            MobiSpine.BuildSpine(ref _newContainer, OPFFile[0]);
+            string[] editedxml = Directory.GetFiles(FilePath, "*.xml");
+            MobiManifest.BuildManifest(ref _newContainer, editedxml[0]);
+            MobiSpine.BuildSpine(ref _newContainer, editedxml[0]);
             string[] ToCFile = Directory.GetFiles(FilePath, "*.ncx");
             string[] BookFile = Directory.GetFiles(FilePath, "*.html");
             //Some Mobi files don't have a .ncx file which is a table of contents file. will create toc based off of anchor tags in the html

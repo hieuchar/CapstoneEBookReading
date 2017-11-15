@@ -33,7 +33,7 @@ namespace EBookReading.CBR
         {
             LocalDirectory = FilePath;
             RarArchive r = RarArchive.Open(FilePath);
-            _entries = r.Entries.OrderBy(entry => entry.Key);          
+            _entries = r.Entries.Where(entry => entry.Size > 0).OrderBy(entry => entry.Key);          
         }
         public Image LoadPage(int PageNumber)
         {

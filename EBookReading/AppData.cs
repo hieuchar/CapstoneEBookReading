@@ -67,8 +67,9 @@ namespace EBookReading
             MyAppData LoadData = null; 
             try
             {
+                string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + (FileName);
                 IFormatter formatter = new BinaryFormatter();
-                LoadStream = new FileStream(FileName, FileMode.Open, FileAccess.Read, FileShare.None);                            
+                LoadStream = new FileStream(StoragePath, FileMode.Open, FileAccess.Read, FileShare.None);                            
                 LoadData = (MyAppData)formatter.Deserialize(LoadStream);
             }
             catch(Exception e)
@@ -91,8 +92,9 @@ namespace EBookReading
             Stream SaveStream = null;
             try
             {
+                string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + (FileName);
                 IFormatter formatter = new BinaryFormatter();
-                SaveStream = new FileStream(FileName, FileMode.Create, FileAccess.Write, FileShare.None);                
+                SaveStream = new FileStream(StoragePath, FileMode.Create, FileAccess.Write, FileShare.None);                
                 formatter.Serialize(SaveStream, Data);
             }
             catch(Exception e)
