@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using mshtml;
 using System.Windows.Navigation;
+using System.IO;
 
 namespace EBookReading.Epub
 {
@@ -28,7 +29,9 @@ namespace EBookReading.Epub
         double CurrentZoom = 1.0;
         public EpubBrowser()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            NextChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//rightarrowicon.png"));
+            PrevChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//leftarrowicon.png"));
         }
         public void DisplayBook(string FilePath)
         {            

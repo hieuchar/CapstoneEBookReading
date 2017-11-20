@@ -11,6 +11,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
+
 namespace EBookReading
 {
     public partial class MainWindow : Window
@@ -20,13 +22,16 @@ namespace EBookReading
         {
             InitializeComponent();
             AppData.LoadData("EBookPaths.sav");
+            LoadIcons();
             CreateGrid();
             RefreshList();
-            //LoadMobiTest();
-        }
-        public void LoadMobiTest()
-        {
             
+        }
+        public void LoadIcons()
+        {
+            AddBookImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/AddBookicon.png"));
+            AddFolderImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/AddFolderIcon.png"));
+            RemoveListingImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/DeleteIcon.png"));
         }
         #region File Loading
 
@@ -35,6 +40,14 @@ namespace EBookReading
             e.CanExecute = true;
         }
         private void AddFolderCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            OpenFolderDialog();            
+        }
+        private void AddFolderButton_Pressed(object sender, RoutedEventArgs e)
+        {
+            OpenFolderDialog();
+        }
+        private void OpenFolderDialog()
         {
             //Open up a file explorer to find a folder with ebooks within it and add all of them
             //Only searches that directory, will not search farther
@@ -57,7 +70,15 @@ namespace EBookReading
 
         private void AddBookCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            //Open up a file explorer to add a specific ebook
+            OpenBookDialog();
+        }
+        private void AddBookButton_Pressed(object sender, RoutedEventArgs e)
+        {
+            OpenBookDialog();
+        }
+        private void OpenBookDialog()
+        {
+            //Open up a file explorer to add a specific ebook            
             var AddBookDialog = new System.Windows.Forms.OpenFileDialog();
             AddBookDialog.Filter = "Ebook Files | *.mobi; *.pdf; *.epub; *.cbr; *.cbz";
             AddBookDialog.InitialDirectory = @"C:\";
@@ -75,7 +96,7 @@ namespace EBookReading
         }
         #endregion
         #region Deleting
-        private void Delete_Book(object sender, EventArgs e)
+        private void Delete_Book(object sender, RoutedEventArgs e)
         {
             var DeleteList = LibraryDataGrid.SelectedItems;
             foreach (BookInfo bi in DeleteList)
@@ -154,10 +175,22 @@ namespace EBookReading
             TitleColumn.Header = "Title";
             TitleColumn.Binding = new Binding("Title");
             LibraryDataGrid.Columns.Add(TitleColumn);
+
             DataGridTextColumn AuthorColumn = new DataGridTextColumn();
             AuthorColumn.Header = "Author";
             AuthorColumn.Binding = new Binding("Author");
-            LibraryDataGrid.Columns.Add(AuthorColumn);
+            LibraryDataGrid.Columns.Add(AuthorColumn);           
+
+            DataGridTextColumn PublishDateColumn = new DataGridTextColumn();
+            PublishDateColumn.Header = "Date";
+            PublishDateColumn.Binding = new Binding("Date");
+            LibraryDataGrid.Columns.Add(PublishDateColumn);
+
+            DataGridTextColumn PublisherColumn = new DataGridTextColumn();
+            PublisherColumn.Header = "Publisher";
+            PublisherColumn.Binding = new Binding("Publisher");
+            LibraryDataGrid.Columns.Add(PublisherColumn);
+
             DataGridTextColumn FileTypeColumn = new DataGridTextColumn();
             FileTypeColumn.Header = "Extension";
             FileTypeColumn.Binding = new Binding("Extension");
@@ -165,5 +198,10 @@ namespace EBookReading
         }
         //Opens a new window with the content of the book
         #endregion
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            SearchBar.Text = "";
+        }
     }
 }

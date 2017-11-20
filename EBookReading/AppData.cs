@@ -60,6 +60,8 @@ namespace EBookReading
         public static void DeleteBook(string PathToDelete)
         {
             Data.EbookPaths.Remove(PathToDelete);
+            string StoragePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\VoBookFiles\\" + System.IO.Path.GetFileNameWithoutExtension(PathToDelete);
+            Directory.Delete(StoragePath, true);
         }
         public static void LoadData(string FileName)
         {
@@ -67,7 +69,7 @@ namespace EBookReading
             MyAppData LoadData = null; 
             try
             {
-                string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + (FileName);
+                string StoragePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\VoBookFiles\\" + (FileName);
                 IFormatter formatter = new BinaryFormatter();
                 LoadStream = new FileStream(StoragePath, FileMode.Open, FileAccess.Read, FileShare.None);                            
                 LoadData = (MyAppData)formatter.Deserialize(LoadStream);
@@ -92,7 +94,7 @@ namespace EBookReading
             Stream SaveStream = null;
             try
             {
-                string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + (FileName);
+                string StoragePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\VoBookFiles\\" + (FileName);
                 IFormatter formatter = new BinaryFormatter();
                 SaveStream = new FileStream(StoragePath, FileMode.Create, FileAccess.Write, FileShare.None);                
                 formatter.Serialize(SaveStream, Data);

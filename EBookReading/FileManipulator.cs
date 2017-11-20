@@ -44,12 +44,9 @@ namespace EBookReading
             return Books;
         }
         public static BookInfo CreateBookFromPath(string path)
-        {
-
+        {            
             BookInfo temp = new BookInfo(path);
             temp.AddInformation(GetBookInformation(path));
-
-
             return temp;
         }
         public static List<string> GetBookInformation(string FilePath)
@@ -75,18 +72,30 @@ namespace EBookReading
                     {
                         info.Add("Unknown Author");
                     }
+                    try
+                    {
+                        info.Add(InfoReader.Info["Publisher"]);
+                    }
+                    catch
+                    {
+                        info.Add("Unknown Publisher");
+                    }
                     break;
                 case "epub":
                     EpubReader eb = new EpubReader();
                     eb.CreatePartialBook(FilePath);
                     info.Add(eb.GetTitle());
                     info.Add(eb.GetAuthor());
+                    info.Add(eb.GetPublishDate());
+                    info.Add(eb.GetPublisher());
                     break;
                 case "mobi":
                     MobiReader mb = new MobiReader();
                     mb.CreatePartialBook(ExtractMobi(FilePath));
                     info.Add(mb.GetTitle());
                     info.Add(mb.GetAuthor());
+                    info.Add(mb.GetPublishDate());
+                    info.Add(mb.GetPublisher());
                     break;
                 default:
                     info.Add(Path.GetFileNameWithoutExtension(FilePath));
@@ -148,7 +157,7 @@ namespace EBookReading
             string[] files = Directory.GetFiles(Directory.GetCurrentDirectory());
             ProcessStartInfo start = new ProcessStartInfo();
             start.FileName = paths;
-            string StoragePath = System.IO.Path.GetTempPath() + "VoBookFiles\\" + Path.GetFileNameWithoutExtension(FilePath);
+            string StoragePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\VoBookFiles\\" + Path.GetFileNameWithoutExtension(FilePath);
             Console.WriteLine(StoragePath);
             if (!System.IO.Directory.Exists(StoragePath))
             {

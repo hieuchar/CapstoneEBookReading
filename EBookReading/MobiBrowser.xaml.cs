@@ -1,6 +1,7 @@
 ﻿using EBookReading.Mobi;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,6 +31,8 @@ namespace EBookReading
         {
             InitializeComponent();            
             mb = new MobiReader();
+            NextChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//rightarrowicon.png"));
+            PrevChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//leftarrowicon.png"));
         }
         //Create a MobiBook from a file path and navigate to the html file
         public void DisplayBook(string FilePath)

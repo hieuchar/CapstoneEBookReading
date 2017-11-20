@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:CustomCommand="clr-namespace:EBookReading"        
         mc:Ignorable="d"
-        Title="Main Window" Height="800" Width="650">
+        Title="Library" Height="800" Width="800" FontSize="14">
     <Window.CommandBindings>
         
         <CommandBinding Command="CustomCommand:Commands.AddFolder" CanExecute="AddFolderCommand_CanExecute" Executed="AddFolderCommand_Executed"/>
@@ -13,15 +13,36 @@
                
     </Window.CommandBindings>
     <StackPanel ScrollViewer.VerticalScrollBarVisibility="Visible" CanVerticallyScroll="True">
-        <Menu>
-            <MenuItem Header="Add">
-                <MenuItem Command="CustomCommand:Commands.AddFolder" />
-                <MenuItem Command="CustomCommand:Commands.AddBook"  />
-            </MenuItem>
-            <Button Click="Delete_Book">Delete</Button>
-        </Menu>
-        <TextBox KeyDown="SearchKeyDownHandler"></TextBox>
-        <DataGrid Name="LibraryDataGrid" MaxHeight="700" MaxWidth="625" IsReadOnly="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition MaxHeight="100"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="0" Name="AddBookButton" Height="100" Background="White" BorderBrush="White" Click="AddBookButton_Pressed">
+                <StackPanel>
+                    <Image Name="AddBookImage" Stretch="Uniform" MaxHeight="80" ></Image>
+                    <TextBlock>Add book</TextBlock>
+                </StackPanel>                               
+            </Button>
+            <Button Grid.Column="1" Name="AddFolderButton" Height="100" Background="White" BorderBrush="White" Click="AddFolderButton_Pressed">
+                <StackPanel>
+                    <Image Name="AddFolderImage" Stretch="Uniform" MaxHeight="80"></Image>
+                    <TextBlock>Add folder</TextBlock>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="2" Name="RemoveListingButton" Height="100" Background="White" BorderBrush="White" Click="Delete_Book">
+                <StackPanel>
+                    <Image Name="RemoveListingImage" Stretch="Uniform" MaxHeight="80"></Image>
+                    <TextBlock>Remove book</TextBlock>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <DataGrid Name="LibraryDataGrid" IsReadOnly="True" Padding="5px">
             <DataGrid.Columns>                
                 <DataGridTemplateColumn>
                     <DataGridTemplateColumn.CellTemplate>
@@ -30,10 +51,10 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-            </DataGrid.Columns>
-           
-        </DataGrid>        
-        
-        
+            </DataGrid.Columns>           
+        </DataGrid>
+        <TextBox Name="SearchBar" KeyDown="SearchKeyDownHandler" Text="Search" GotFocus="TextBox_GotFocus"></TextBox>
+
+
     </StackPanel>
 </Window>

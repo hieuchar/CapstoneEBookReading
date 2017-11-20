@@ -10,8 +10,29 @@
         <CommandBinding Command="CustomCommand:Commands.NextPage" CanExecute="NextPageCommand_CanExecute" Executed="NextPageCommand_Executed"/>
         <CommandBinding Command="CustomCommand:Commands.PrevPage" CanExecute="PrevPageCommand_CanExecute" Executed="PrevPageCommand_Executed" />
     </Window.CommandBindings>
-    <Grid>
-        <Image Name="ImageContent" Stretch="Fill">            
+    <StackPanel>
+        <Grid Height="35">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>               
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button BorderThickness="0" Background="White" Grid.Column="0" Name="PrevPage" Click="PrevPageButton_Pressed">
+                <Image Name="LeftArrow">
+                    
+                </Image>
+            </Button>
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Name="PageNumber" Orientation="Horizontal">
+                <TextBox BorderThickness="0" FontSize="16" PreviewTextInput="NumberValidationTextBox" Name="CurrentPageBox" KeyDown="CurrentPage_KeyDown"></TextBox>
+                <TextBox BorderThickness="0" FontSize="16" IsReadOnly="True" Name="TotalPages"></TextBox>
+            </StackPanel>
+            <Button BorderThickness="0" Background="White" Grid.Column="2" Name="NextPage" Click="NextPageButton_Pressed">
+                <Image Name="RightArrow">
+
+                </Image>
+            </Button>
+        </Grid>
+        <Image MaxHeight="750" MaxWidth="675" Name="ImageContent" Stretch="Fill">            
         </Image>
-    </Grid>
+    </StackPanel>
 </Window>

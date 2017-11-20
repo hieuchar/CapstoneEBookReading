@@ -38,8 +38,7 @@ namespace EBookReading.CBR
         public Image LoadPage(int PageNumber)
         {
             Stream m = _entries.ElementAt(PageNumber).OpenEntryStream();
-            Image img = Image.FromStream(m);            
-            m.Close();
+            Image img = Image.FromStream(m);             
             m.Dispose();
             return img;
         }

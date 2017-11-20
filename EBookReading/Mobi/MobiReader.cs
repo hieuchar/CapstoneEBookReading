@@ -31,7 +31,15 @@ namespace EBookReading.Mobi
         public string GetAuthor()
         {
             return book.NewContainer.ContentOPF.Author;
-        }       
+        }
+        public string GetPublisher()
+        {
+            return book.NewContainer.ContentOPF.Publisher;
+        }
+        public string GetPublishDate()
+        {
+            return book.NewContainer.ContentOPF.Date;
+        }
         public string GetBookPath()
         {
             return book.HTMlDirectory;

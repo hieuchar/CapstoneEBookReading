@@ -40,7 +40,7 @@ namespace EBookReading.CBZ
             Image img = Image.FromStream(m);
             
             m.Dispose();
-            m.Close();
+            
             return img;
         }
      
