@@ -9,10 +9,10 @@ using System.Windows.Media;
 namespace EBookReading
 {
     public abstract class ComicBookAbstract
-    {
+    {        
         public abstract void CreateBook(string FilePath);
         public abstract Image GetPage(int PageNumber);
         public abstract int GetMaxPage();
-
+        public abstract string GetExtension();
     }
 }

@@ -11,7 +11,7 @@
             <ColumnDefinition Width="2*"></ColumnDefinition>
             <ColumnDefinition Width="8*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <ListBox ScrollViewer.CanContentScroll="True"  Name="ToC" Grid.Column="0"></ListBox>
+        <ListBox  Foreground="Black" ScrollViewer.CanContentScroll="True"  Name="ToC" Grid.Column="0"></ListBox>
         <Grid Name="BookGrid" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="85*"></RowDefinition>
@@ -25,12 +25,12 @@
                     <ColumnDefinition></ColumnDefinition>
                     <ColumnDefinition></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <Button Background="White" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Next_Chapter">
+                <Button Name="NextChapterButton" Grid.Column="1" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Next_Chapter">
                     <StackPanel>
                         <Image Name="NextChapterImage" ></Image>
                     </StackPanel>
                 </Button>
-                <Button Background="White" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Prev_Chapter">
+                <Button Name="PrevChapterButton" Grid.Column="0" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Click="Prev_Chapter">
                     <StackPanel>
                         <Image Name="PrevChapterImage"></Image>
                     </StackPanel>

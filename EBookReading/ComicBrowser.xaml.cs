@@ -25,6 +25,7 @@ namespace EBookReading
     /// </summary>
     public partial class ComicBrowser : Window
     {
+        private string _filePath;
         ComicBookAbstract CBook;
         int CurrentPage = 0;
         public ComicBrowser()
@@ -38,11 +39,13 @@ namespace EBookReading
         /// <param name="FilePath"></param>
         public void DisplayBook(string FilePath)
         {
+            _filePath = FilePath;
+            CurrentPage = AppData.GetChapter(FilePath);
             switch (System.IO.Path.GetExtension(FilePath))
             {
                 case ".cbr":
                     CBook = new CBRReader();
-                    CBook.CreateBook(FilePath);
+                    CBook.CreateBook(FilePath);                    
                     ImageContent.Source = ConvertImageToImageSource(CBook.GetPage(CurrentPage));
                     break;
                 case ".cbz":
@@ -70,7 +73,8 @@ namespace EBookReading
             return bitmapImage;
         }
         public void OnWindowClosing(object sender, CancelEventArgs e)
-        {           
+        {
+            AppData.AddBookProgress(_filePath, CurrentPage);
             CBook = null;
         }
         private void NextPageCommand_CanExecute(object sender, CanExecuteRoutedEventArgs e)

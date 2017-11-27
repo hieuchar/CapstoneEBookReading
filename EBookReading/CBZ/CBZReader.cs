@@ -14,9 +14,14 @@ namespace EBookReading.CBZ
     {
         CBZBook book;
         public override void CreateBook(string FilePath)
-        {
+        {            
             book = new CBZBook();
-            book.LoadBook(FilePath);
+            book.LoadBook(FilePath);            
+        }
+
+        public override string GetExtension()
+        {
+            return Path.GetExtension(book.LocalDirectory);
         }
 
         public override int GetMaxPage()

@@ -53,3 +53,15 @@ D:\Capstone\EBookReading\EBookReading\bin\Debug\Microsoft.Scripting.Metadata.xml
 D:\Capstone\EBookReading\EBookReading\obj\Debug\EBookReading_Content.g.cs
 D:\Capstone\EBookReading\EBookReading\obj\Debug\MobiBrowser.g.cs
 D:\Capstone\EBookReading\EBookReading\obj\Debug\MobiBrowser.baml
+D:\Capstone\EBookReading\EBookReading\obj\Debug\App.baml
+D:\Capstone\EBookReading\EBookReading\bin\Debug\System.Windows.Interactivity.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\System.Windows.Interactivity.xml
+D:\Capstone\EBookReading\EBookReading\bin\Debug\de\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\en\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\es\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\fr\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\it\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\ja\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\ko\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
+D:\Capstone\EBookReading\EBookReading\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll

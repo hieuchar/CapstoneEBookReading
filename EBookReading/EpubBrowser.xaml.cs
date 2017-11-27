@@ -31,16 +31,63 @@ namespace EBookReading.Epub
         {
             InitializeComponent();
             NextChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//rightarrowicon.png"));
-            PrevChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//leftarrowicon.png"));
+            PrevChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//leftarrowicon.png"));            
+            Closing += EpubBrowser_Closing;
+            SectionContent.LoadCompleted += SectionContent_LoadCompleted;
         }
+
+        private void SectionContent_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            if (Application.Current.Resources.MergedDictionaries.Count > 0)
+            {
+                MainGrid.Background = (Brush)FindResource("BackgroundNormal");
+                ToC.Foreground = Brushes.White;
+                var webBrowser = SectionContent;
+
+                if (webBrowser != null)
+                {
+                    var document = webBrowser.Document as mshtml.HTMLDocument;
+
+                    if (document != null)
+                    {
+                        var head = document.getElementsByTagName("head").OfType<mshtml.HTMLHeadElement>().FirstOrDefault();
+
+                        if (head != null)
+                        {
+                            var styleSheet = (mshtml.IHTMLStyleSheet)document.createStyleSheet("", 0);
+                            styleSheet.cssText = "* { background-color: #3F3F46; " +
+                                                 " font-family: Arial, Helvetica, sans-serif; " +
+                                                 " color: white; }";
+                        }
+                    }
+                }
+            }
+        }
+
+        private void EpubBrowser_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            AppData.AddBookProgress(eb.GetTitle() + "_epub", ChapterNumber);
+        }
+
         public void DisplayBook(string FilePath)
         {            
             eb = new EpubReader();
-            eb.CreateBook(FilePath);
+            eb.CreateBook(FilePath);            
             LoadCSS();
-            string SecContent = Prefix;            
-            List<string> firstsection = eb.GetFirstChapter();
-            foreach (string s in firstsection) SecContent += s;            
+            string SecContent = Prefix;
+            int prevChapter = AppData.GetChapter(eb.GetTitle() + "_epub");
+            List<string> loadsection;
+            if(prevChapter > 0)
+            {
+                ChapterNumber = prevChapter;
+                loadsection = eb.GetChapter(ref ChapterNumber, 0);
+                
+            }
+            else
+            {
+                loadsection = eb.GetFirstChapter();                
+            }
+            foreach (string s in loadsection) SecContent += s;
             SectionContent.NavigateToString(SecContent);
             SectionContent.Navigated += RefreshZoom;
             LoadToC();           
@@ -58,6 +105,13 @@ namespace EBookReading.Epub
         private void LoadToC()
         {
             List<string> ToCList = eb.GetToC();
+            //foreach(string s in ToCList)
+            //{
+            //    ListBoxItem temp = new ListBoxItem();
+            //    temp.Content = s;
+            //    temp.MouseDoubleClick += Open_Chapter;
+            //    ToC.Items.Add(temp);                
+            //}
             ToC.ItemsSource = ToCList;
             ToC.MouseDoubleClick += Open_Chapter;
         }

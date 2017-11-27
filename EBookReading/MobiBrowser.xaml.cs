@@ -33,14 +33,52 @@ namespace EBookReading
             mb = new MobiReader();
             NextChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//rightarrowicon.png"));
             PrevChapterImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "//Icons//leftarrowicon.png"));
+            Closing += MobiBrowser_Closing;
+            BookContent.LoadCompleted += BookContent_LoadCompleted;
         }
+
+        private void BookContent_LoadCompleted(object sender, NavigationEventArgs e)
+        {
+            if (System.Windows.Application.Current.Resources.MergedDictionaries.Count > 0)
+            {
+                MainGrid.Background = (Brush)FindResource("BackgroundNormal");
+                ToC.Foreground = Brushes.White;
+                var webBrowser = BookContent;
+
+                if (webBrowser != null)
+                {
+                    var document = webBrowser.Document as mshtml.HTMLDocument;
+
+                    if (document != null)
+                    {
+                        var head = document.getElementsByTagName("head").OfType<mshtml.HTMLHeadElement>().FirstOrDefault();
+
+                        if (head != null)
+                        {
+                            var styleSheet = (mshtml.IHTMLStyleSheet)document.createStyleSheet("", 0);
+                            styleSheet.cssText = "* { background-color: #3F3F46; " +
+                                                 " font-family: Arial, Helvetica, sans-serif; " +
+                                                 " color: white; }";
+                        }
+                    }
+                                    }
+            }
+        }
+
+        private void MobiBrowser_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            AppData.AddBookProgress(mb.GetTitle() + "_mobi", ChapterNumber);
+        }
+
         //Create a MobiBook from a file path and navigate to the html file
         public void DisplayBook(string FilePath)
         {
             mb.CreateBook(FilePath);
             this.Title = mb.GetTitle();            
             LoadToC();
-            BookContent.Navigate(mb.GetBookPath());
+            ChapterNumber = AppData.GetChapter(mb.GetTitle() + "_mobi");
+            string pos = mb.GetChapter(ref ChapterNumber, 0);
+            BookContent.Navigate(mb.GetBookPath() + pos);
         }
         private void LoadToC()
         {

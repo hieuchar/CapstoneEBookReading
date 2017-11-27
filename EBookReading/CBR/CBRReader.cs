@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,12 @@ namespace EBookReading.CBR
             book = new CBRBook();
             book.LoadBook(FilePath);
         }
+
+        public override string GetExtension()
+        {
+            return Path.GetExtension(book.LocalDirectory);
+        }
+
         public override int GetMaxPage()
         {
             return book.Entries.Count();

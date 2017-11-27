@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace EBookReading
@@ -18,17 +19,36 @@ namespace EBookReading
     public partial class MainWindow : Window
     {
         private List<BookInfo> Library = new List<BookInfo>();
+        public Theme theme;
         public MainWindow()
         {
             InitializeComponent();
             AppData.LoadData("EBookPaths.sav");
             LoadIcons();
+            LoadTheme();
             CreateGrid();
-            RefreshList();
-            
+            RefreshList();            
+        }
+        public void LoadTheme()
+        {        
+            theme = AppData.GetTheme();
+            switch (theme)
+            {
+                case Theme.DARK:                    
+                    Application.Current.Resources.MergedDictionaries.Add(new ResourceDictionary()
+                    {
+                        Source = new Uri("pack://application:,,,/Selen.Wpf.SystemStyles;component/Styles.xaml", UriKind.RelativeOrAbsolute)
+                    });
+                    MainPanel.Background = (Brush)FindResource("BackgroundNormal");
+                    break;
+                case Theme.DEFAULT:
+                    Application.Current.Resources.MergedDictionaries.Clear();
+                    MainPanel.Background = Brushes.White;
+                    break;
+            }
         }
         public void LoadIcons()
-        {
+        {                        
             AddBookImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/AddBookicon.png"));
             AddFolderImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/AddFolderIcon.png"));
             RemoveListingImage.Source = new BitmapImage(new Uri(Directory.GetCurrentDirectory() + "/Icons/DeleteIcon.png"));
@@ -128,7 +148,7 @@ namespace EBookReading
             {
                 AppData.DeleteBook(s);
             }            
-            LibraryDataGrid.Items.Clear();
+            LibraryDataGrid.Items.Clear();            
             foreach (BookInfo b in Library)
             {
                 LibraryDataGrid.Items.Add(b);
@@ -202,6 +222,21 @@ namespace EBookReading
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             SearchBar.Text = "";
+        }
+
+        private void SwitchTheme_Click(object sender, RoutedEventArgs e)
+        {
+            switch (theme)
+            {
+                case Theme.DARK:
+                    AppData.ChangeTheme(Theme.DEFAULT);
+                    LoadTheme();
+                    break;
+                case Theme.DEFAULT:
+                    AppData.ChangeTheme(Theme.DARK);
+                    LoadTheme();
+                    break;
+            }
         }
     }
 }

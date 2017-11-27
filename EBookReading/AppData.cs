@@ -15,11 +15,14 @@ namespace EBookReading
     {
        public List<string> EbookPaths;
        public List<string> FolderPaths;
-
+       public Dictionary<string, int> BookProgress;
+        public Theme CurrentTheme;
         public MyAppData()
         {
             EbookPaths = new List<string>();
             FolderPaths = new List<string>();
+            BookProgress = new Dictionary<string, int>();
+            CurrentTheme = Theme.DEFAULT;
         }
     }
     public class AppData 
@@ -28,10 +31,14 @@ namespace EBookReading
         public static IEnumerator GetBookPaths()
         {
             return Data.EbookPaths.GetEnumerator();
-        }
-        public static string GetBookAtIndex(int index)
+        }        
+        public static Theme GetTheme()
         {
-            return Data.EbookPaths[index];
+            return Data.CurrentTheme;
+        }
+        public static void ChangeTheme(Theme change)
+        {
+            Data.CurrentTheme = change;
         }
         public static void AddBookPath(string PathToAdd)
         {
@@ -57,6 +64,23 @@ namespace EBookReading
                 Data.FolderPaths.Add(PathToAdd);
             }
         }
+        public static void AddBookProgress(string BookName, int ChapterNumber)
+        {
+            if (Data.BookProgress.Keys.Contains(BookName))
+            {
+                Data.BookProgress[BookName] = ChapterNumber;
+            }
+            else
+            {
+                Data.BookProgress.Add(BookName, ChapterNumber);
+            }
+        }
+        public static int GetChapter(string BookName)
+        {
+            int chapterNum = 0;
+            Data.BookProgress.TryGetValue(BookName, out chapterNum);
+            return chapterNum;            
+        }
         public static void DeleteBook(string PathToDelete)
         {
             Data.EbookPaths.Remove(PathToDelete);
@@ -76,14 +100,17 @@ namespace EBookReading
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.StackTrace);
+                Console.WriteLine("Unable to find user data");
             }
             finally
             {
                 if (null != LoadStream)
                 {
                     Data.EbookPaths = LoadData.EbookPaths;
-                    //Data.FolderPaths = LoadData.FolderPaths;
+                    Data.BookProgress = LoadData.BookProgress;
+                    Data.CurrentTheme = LoadData.CurrentTheme;
+                    //Data.BookProgress = new Dictionary<string, int>();
+                    
                     LoadStream.Close();
                 }
             }
